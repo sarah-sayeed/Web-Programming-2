@@ -1,0 +1,1591 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Things To Do – Holidae</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #4a0a1a;
+      color: #faecc2;
+      overflow-x: hidden;
+    }
+
+    /* nav */
+    nav {
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      justify-content: space-between;
+      background: rgba(74, 10, 26, 0.75);
+      backdrop-filter: blur(0px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+      border-bottom: 1px solid transparent;
+      transition: backdrop-filter 0.4s ease, background 0.4s ease, border-color 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(74, 10, 26, 0.85);
+      backdrop-filter: blur(18px);
+      border-color: rgba(245, 215, 142, 0.15);
+    }
+
+    .nav-logo {
+      width: 290px;
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: #faecc2;
+      border-radius: 2px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #faecc2;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      transition: color 0.3s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: #f5d78e;
+    }
+
+    /* banner */
+    .hero-banner {
+      position: relative;
+      background: linear-gradient(135deg, #1a0508 0%, #4a0a1a 50%, #6b1028 100%);
+      padding: 80px 40px 70px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 20% 50%, rgba(245, 215, 142, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245, 215, 142, 0.06) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: transparent;
+    }
+
+    .hero-eyebrow {
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-banner h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      color: whitesmoke;
+      font-weight: 700;
+      line-height: 1.1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-banner h1 em {
+      font-style: italic;
+      color: #f5d78e;
+    }
+
+    .hero-banner p {
+      color: rgba(245, 231, 198, 0.92);
+      margin-top: 14px;
+      font-size: 1rem;
+      max-width: 500px;
+      margin-inline: auto;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+    /* tabs */
+    .cat-tabs {
+      background: whitesmoke;
+      border-bottom: 2px solid #4a1020;
+      display: flex;
+      justify-content: center;
+      gap: 0;
+      overflow-x: auto;
+      scrollbar-width: none;
+      position: sticky;
+      top: 70px;
+      z-index: 900;
+    }
+
+    .cat-tabs::-webkit-scrollbar {
+      display: none;
+    }
+
+    .cat-tab {
+      flex-shrink: 0;
+      padding: 16px 28px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #6b1028;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-bottom: 3px solid transparent;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .cat-tab:hover,
+    .cat-tab.active {
+      color: #4a0a1a;
+      border-color: #8b1a38;
+    }
+
+
+    .section-heading {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 50px 40px 0;
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .section-heading h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      color: #f5d78e;
+      white-space: nowrap;
+    }
+
+    .section-heading::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      margin-left: 16px;
+      background: linear-gradient(to right, #f5d78e, rgba(245, 215, 142, 0));
+    }
+
+
+    .activities-section {
+      padding: 28px 40px 60px;
+      max-width: 1280px;
+      margin: 0 auto;
+    }
+
+    .activities-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 24px;
+    }
+
+    /* activity cards */
+    .activity-card {
+      background: whitesmoke;
+      border-radius: 14px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.35);
+      border: 1px solid #4a1020;
+      transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
+      cursor: pointer;
+    }
+
+    .activity-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 14px 40px rgba(0, 0, 0, 0.5);
+      border-color: rgba(218, 165, 32, 0.4);
+    }
+
+    .activity-img-wrap {
+      position: relative;
+      height: 210px;
+      overflow: hidden;
+    }
+
+    .activity-img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.45s;
+    }
+
+    .activity-card:hover .activity-img {
+      transform: scale(1.07);
+    }
+
+    .activity-cat {
+      position: absolute;
+      top: 14px;
+      left: 14px;
+      background: #4a0a1a;
+      color: #f5d78e;
+      font-size: 0.72rem;
+      font-weight: 600;
+      padding: 4px 11px;
+      border-radius: 20px;
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(245, 231, 198, 0.2);
+    }
+
+    /* "View Gallery" hint badge */
+    .gallery-hint {
+      position: absolute;
+      bottom: 12px;
+      right: 12px;
+      background: #4a0a1a;
+      color: #f5d78e;
+      font-size: 0.7rem;
+      font-weight: 700;
+      padding: 4px 10px;
+      border-radius: 20px;
+      letter-spacing: 0.04em;
+      opacity: 0;
+      transform: translateY(6px);
+      transition: opacity 0.25s, transform 0.25s;
+    }
+
+    .activity-card:hover .gallery-hint {
+      opacity: 1;
+      transform: translateY(0);
+    }
+
+    .activity-body {
+      padding: 18px 20px 20px;
+    }
+
+    .activity-name {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #8b1a38;
+      margin-bottom: 4px;
+    }
+
+    .activity-location {
+      font-size: 0.82rem;
+      color: #8b1a38;
+      margin-bottom: 10px;
+    }
+
+    .activity-desc {
+      font-size: 0.85rem;
+      color: #8b1a38;
+      line-height: 1.65;
+    }
+
+    .activity-meta {
+      display: flex;
+      gap: 16px;
+      margin-top: 14px;
+      padding-top: 14px;
+      border-top: 1px solid #8b1a38;
+      font-size: 0.78rem;
+      color: #8b1a38;
+    }
+
+    /* lightbox */
+    .lightbox-overlay {
+      position: fixed;
+      inset: 0;
+      z-index: 9999;
+      background: rgba(0, 0, 0, 0.92);
+      backdrop-filter: blur(8px);
+      display: flex;
+      flex-direction: column;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.35s ease;
+    }
+
+    .lightbox-overlay.open {
+      opacity: 1;
+      pointer-events: all;
+    }
+
+    .lightbox-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 20px 32px;
+      border-bottom: 1px solid rgba(245, 231, 198, 0.12);
+      flex-shrink: 0;
+    }
+
+    .lightbox-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.4rem;
+      color: #f5d78e;
+      font-weight: 700;
+    }
+
+    .lightbox-subtitle {
+      font-size: 0.82rem;
+      color: rgba(245, 215, 142, 0.75);
+      margin-top: 3px;
+    }
+
+    .lightbox-close {
+      background: none;
+      border: none;
+      cursor: pointer;
+      color: #faecc2;
+      font-size: 1.6rem;
+      line-height: 1;
+      width: 40px;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    .lightbox-close:hover {
+      background: rgba(245, 231, 198, 0.1);
+      color: #f5d78e;
+    }
+
+    .lightbox-body {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 32px 32px;
+    }
+
+    /* Main featured image */
+    .lb-main-img {
+      width: 100%;
+      height: 420px;
+      object-fit: cover;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: block;
+    }
+
+    /* Gallery grid */
+    .lb-gallery-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+
+    .lb-gallery-item {
+      position: relative;
+      height: 160px;
+      overflow: hidden;
+      border-radius: 10px;
+      cursor: pointer;
+    }
+
+    .lb-gallery-item img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.35s;
+    }
+
+    .lb-gallery-item:hover img {
+      transform: scale(1.08);
+    }
+
+    .lb-gallery-item.active {
+      outline: 3px solid #f5d78e;
+    }
+
+    /* Info section inside lightbox */
+    .lb-info {
+      background: whitesmoke;
+      border-radius: 12px;
+      padding: 22px 24px;
+      border: 1px solid #4a1020;
+      margin-bottom: 16px;
+    }
+
+    .lb-info-desc {
+      font-size: 0.92rem;
+      color: #6b1028;
+      line-height: 1.75;
+      margin-bottom: 14px;
+    }
+
+    .lb-info-tags {
+      display: flex;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .lb-tag {
+      background: rgba(74, 10, 26, 0.6);
+      color: #f5d78e;
+      border: 1px solid rgba(218, 165, 32, 0.3);
+      font-size: 0.78rem;
+      font-weight: 600;
+      padding: 5px 13px;
+      border-radius: 20px;
+    }
+
+    /* footer */
+    footer {
+      background: #0d0205;
+      color: rgba(245, 215, 142, 0.75);
+      border-top: 1px solid #4a1020;
+      padding: 0;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 56px 48px 40px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .footer-logo {
+      width: 300px;
+      margin-bottom: 5px;
+      opacity: 0.9;
+    }
+
+    .footer-socials {
+      padding-left: 100px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(245, 215, 142, 0.07);
+      border: 1px solid #4a1020;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f5d78e;
+      text-decoration: none;
+      transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    }
+
+    .social-btn:hover {
+      background: rgba(245, 215, 142, 0.15);
+      border-color: rgba(245, 215, 142, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f5d78e;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .footer-col a,
+    .footer-col span {
+      display: block;
+      font-size: 0.84rem;
+      color: rgba(245, 215, 142, 0.75);
+      text-decoration: none;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: #f5d78e;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #4a1020;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: rgba(245, 215, 142, 0.4);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-bottom-links a {
+      color: rgba(245, 215, 142, 0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-bottom-links a:hover {
+      color: #f5d78e;
+    }
+
+    @media (max-width: 860px) {
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 40px 24px 28px;
+      }
+
+      .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 24px;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .footer-links {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    /* media queries */
+    @media (max-width: 1050px) {
+      .activities-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .lb-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-logo {
+        width: 150px;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(74, 10, 26, 0.97);
+        padding: 20px 24px;
+        gap: 18px;
+        backdrop-filter: blur(12px);
+      }
+
+      nav ul.open {
+        display: flex;
+      }
+
+      .hero-banner {
+        padding: 50px 20px;
+      }
+
+      .activities-section,
+      .section-heading {
+        padding-left: 20px;
+        padding-right: 20px;
+      }
+
+      .activities-grid {
+        grid-template-columns: 1fr;
+        max-width: 480px;
+        margin: 0 auto;
+      }
+
+      .cat-tab {
+        padding: 14px 18px;
+        font-size: 0.8rem;
+      }
+
+      .lb-main-img {
+        height: 240px;
+      }
+
+      .lb-gallery-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .lightbox-body {
+        padding: 18px;
+      }
+
+      .lightbox-header {
+        padding: 16px 18px;
+      }
+    }
+
+    /* privacy/terms footer */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 2, 5, 0.82);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #1a0508;
+      border: 1px solid #4a1020;
+      border-radius: 16px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 40px 44px;
+      position: relative;
+      animation: modalIn 0.25s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: rgba(245, 215, 142, 0.75);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #f5d78e;
+    }
+
+    .modal-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: #faecc2;
+      margin-bottom: 6px;
+    }
+
+    .modal-box .modal-date {
+      font-size: 0.75rem;
+      color: rgba(245, 215, 142, 0.75);
+      opacity: 0.55;
+      margin-bottom: 28px;
+      display: block;
+    }
+
+    .modal-box h3 {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f5d78e;
+      margin: 22px 0 8px;
+    }
+
+    .modal-box p,
+    .modal-box li {
+      font-size: 0.88rem;
+      color: rgba(245, 215, 142, 0.75);
+      line-height: 1.75;
+    }
+
+    .modal-box ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    .modal-box ul li {
+      margin-bottom: 6px;
+    }
+
+    .modal-divider {
+      border: none;
+      border-top: 1px solid #4a1020;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 600px) {
+      .modal-box {
+        padding: 28px 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav id="mainNav">
+    <img src="home/logo1.png" class="nav-logo" alt="Holidae Logo">
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul id="navMenu">
+      <li><a href="home.html">HOME</a></li>
+      <li><a href="destinations.html">DESTINATIONS</a></li>
+      <li><a href="luxury.html">LUXURY STAYS</a></li>
+      <li><a href="thingstodo.html" class="active">THINGS TO DO</a></li>
+      <li><a href="contact.html">RESERVATIONS</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+    <div class="hero-banner">
+      <p class="hero-eyebrow">✦ Curated Experiences ✦</p>
+      <h1><em>Things To Do</em> in the Emirates</h1>
+      <p>From desert adventures to cultural experiences, there's something for every type of traveller.</p>
+    </div>
+
+    <!-- Category tabs -->
+    <div class="cat-tabs">
+      <button class="cat-tab active" data-cat="all">All Activities</button>
+      <button class="cat-tab" data-cat="adventure">Adventure</button>
+      <button class="cat-tab" data-cat="culture">Culture</button>
+      <button class="cat-tab" data-cat="beach">Beach &amp; Water</button>
+      <button class="cat-tab" data-cat="family">Family</button>
+      <button class="cat-tab" data-cat="theme-park">Theme Parks</button>
+    </div>
+
+    <!-- ══════════════════════════════ -->
+    <!--     EXPERIENCES & ACTIVITIES  -->
+    <!-- ══════════════════════════════ -->
+    <div class="section-heading">
+      <h2>Experiences &amp; Activities</h2>
+    </div>
+
+    <section class="activities-section">
+      <div class="activities-grid" id="activitiesGrid">
+
+        <!-- Adventure -->
+        <div class="activity-card" data-cat="adventure" data-id="desert-safari">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/ds/desertsafarifinal.jpg" alt="Desert Safari" class="activity-img">
+            <span class="activity-cat">Adventure</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Desert Safari &amp; Dune Bashing</div>
+            <div class="activity-location">📍 Dubai Desert</div>
+            <div class="activity-desc">Experience the thrill of 4x4 dune bashing across the golden sands, followed by a
+              traditional Bedouin camp dinner under the stars.</div>
+            <div class="activity-meta">
+              <span>⏱ Half Day</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="activity-card" data-cat="adventure" data-id="jebel-jais">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/jj/jebeljais.jpg" alt="Jebel Jais Zipline" class="activity-img">
+            <span class="activity-cat">Adventure</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Jebel Jais Flight Zipline</div>
+            <div class="activity-location">📍 Ras Al Khaimah</div>
+            <div class="activity-desc">Fly across the world's longest zipline at over 1,600 metres above sea level, with
+              jaw-dropping views of the Hajar Mountains.</div>
+            <div class="activity-meta">
+              <span>⏱ 2–3 Hours</span>
+              <span>👥 Adults</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Culture -->
+        <div class="activity-card" data-cat="culture" data-id="louvre">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/cult/louvre.jpg" alt="Louvre Abu Dhabi" class="activity-img">
+            <span class="activity-cat">Culture</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Louvre Abu Dhabi</div>
+            <div class="activity-location">📍 Saadiyat Island, Abu Dhabi</div>
+            <div class="activity-desc">Explore one of the world's most iconic museums, home to thousands of artworks
+              spanning human history, housed in a stunning waterfront building.</div>
+            <div class="activity-meta">
+              <span>⏱ 2–4 Hours</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="activity-card" data-cat="culture" data-id="albidyah">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/cult/alnuaimah.jpg" alt="Al Bidyah Mosque" class="activity-img">
+            <span class="activity-cat">Culture</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Al Bidyah Mosque</div>
+            <div class="activity-location">📍 Fujairah</div>
+            <div class="activity-desc">Visit the UAE's oldest mosque, dating back to 1446. The simple mud-brick
+              structure
+              sits against a dramatic mountain backdrop.</div>
+            <div class="activity-meta">
+              <span>⏱ 1 Hour</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="activity-card" data-cat="culture" data-id="ajman-museum">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/cult/ajmanmuseum.jpg" alt="Ajman Museum" class="activity-img">
+            <span class="activity-cat">Culture</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Ajman Museum</div>
+            <div class="activity-location">📍 Ajman</div>
+            <div class="activity-desc">Housed in an 18th-century fort, Ajman Museum gives a fascinating window into the
+              emirate's past — from traditional weapons to archaeological finds.</div>
+            <div class="activity-meta">
+              <span>⏱ 1–2 Hours</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Beach -->
+        <div class="activity-card" data-cat="beach" data-id="snoopy-island">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/beach/snorkelling.jpg" alt="Snorkelling Fujairah" class="activity-img">
+            <span class="activity-cat">Beach &amp; Water</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Snorkelling at Snoopy Island</div>
+            <div class="activity-location">📍 Al Aqah, Fujairah</div>
+            <div class="activity-desc">Fujairah's east coast waters are some of the clearest in the UAE. Snoopy Island
+              is
+              famous for its coral reefs and colourful marine life.</div>
+            <div class="activity-meta">
+              <span>⏱ Half Day</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+
+        <!-- Family -->
+        <div class="activity-card" data-cat="family" data-id="wadi">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/fam/wadi.jpg" alt="Wild Wadi Waterpark" class="activity-img">
+            <span class="activity-cat">Family</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Wild Wadi Waterpark</div>
+            <div class="activity-location">📍 Jumeirah, Dubai</div>
+            <div class="activity-desc">For over two decades of adventure, Wild Wadi has been Dubai’s go-to for
+              splash-tastic fun, blending adrenaline rides and creating unforgettable memories every visit.</div>
+            <div class="activity-meta">
+              <span>⏱ Full Day</span>
+              <span>👥 Families</span>
+            </div>
+          </div>
+        </div>
+
+
+        <div class="activity-card" data-cat="family" data-id="aquaventure">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/fam/aquaventure.jpg" alt="Aquaventure Waterpark" class="activity-img">
+            <span class="activity-cat">Family</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Aquaventure Waterpark</div>
+            <div class="activity-location">📍 Atlantis The Palm, Dubai</div>
+            <div class="activity-desc">One of the world's best waterparks with over 105 slides and rides, a private
+              beach,
+              and a lazy river. The ultimate family day out.</div>
+            <div class="activity-meta">
+              <span>⏱ Full Day</span>
+              <span>👥 Families</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════════════════════════════ -->
+    <!--         THEME PARKS           -->
+    <!-- ══════════════════════════════ -->
+    <div class="section-heading" style="padding-top: 10px;">
+      <h2>Theme Parks &amp; Attractions</h2>
+    </div>
+
+    <section class="activities-section">
+      <div class="activities-grid" id="parksGrid">
+
+        <!-- Warner Bros. World -->
+        <div class="activity-card" data-cat="theme-park" data-id="warner-bros" id="warner-bros">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/theme/warner.jpg" alt="Warner Bros. World Abu Dhabi" class="activity-img">
+            <span class="activity-cat">Theme Park</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Warner Bros. World Abu Dhabi</div>
+            <div class="activity-location">📍 Yas Island, Abu Dhabi</div>
+            <div class="activity-desc">Meet your favourite DC and Looney Tunes characters at this massive indoor theme
+              park — six immersive lands packed with rides, shows and character experiences.</div>
+            <div class="activity-meta">
+              <span>⏱ Full Day</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- SeaWorld -->
+        <div class="activity-card" data-cat="theme-park" data-id="seaworld" id="seaworld">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/theme/seaworld.jpg" alt="SeaWorld Abu Dhabi" class="activity-img">
+            <span class="activity-cat">Theme Park</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">SeaWorld Abu Dhabi</div>
+            <div class="activity-location">📍 Yas Island, Abu Dhabi</div>
+            <div class="activity-desc">The Middle East's first SeaWorld — a world-class marine theme park on Yas Island
+              with thrilling rides, animal encounters and immersive ocean experiences.</div>
+            <div class="activity-meta">
+              <span>⏱ Full Day</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Ferrari World -->
+        <div class="activity-card" data-cat="theme-park" data-id="ferrari-world" id="ferrari-world">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/theme/ferrariworld.jpg" alt="Ferrari World Abu Dhabi" class="activity-img">
+            <span class="activity-cat">Theme Park</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Ferrari World Abu Dhabi</div>
+            <div class="activity-location">📍 Yas Island, Abu Dhabi</div>
+            <div class="activity-desc">Home to Formula Rossa — the world's fastest roller coaster — and dozens of
+              Ferrari-themed attractions celebrating the iconic Italian brand in spectacular style.</div>
+            <div class="activity-meta">
+              <span>⏱ Full Day</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Yas Waterworld -->
+        <div class="activity-card" data-cat="theme-park" data-id="yas-waterworld" id="yas-waterworld">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/theme/yaswaterworld.jpg" alt="Yas Waterworld" class="activity-img">
+            <span class="activity-cat">Theme Park</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Yas Waterworld</div>
+            <div class="activity-location">📍 Yas Island, Abu Dhabi</div>
+            <div class="activity-desc">Over 45 rides, slides and attractions inspired by a legendary Arabian pearl
+              diver.
+              One of the world's most acclaimed waterparks with thrills for every age.</div>
+            <div class="activity-meta">
+              <span>⏱ Full Day</span>
+              <span>👥 Families</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Motiongate -->
+        <div class="activity-card" data-cat="theme-park" data-id="motiongate" id="motiongate">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/theme/motiongate.jpg" alt="Motiongate Dubai" class="activity-img">
+            <span class="activity-cat">Theme Park</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Motiongate Dubai</div>
+            <div class="activity-location">📍 Dubai Parks &amp; Resorts</div>
+            <div class="activity-desc">Hollywood comes to Dubai — zones dedicated to DreamWorks, Sony Pictures and
+              Lionsgate bring your favourite blockbuster movies to thrilling life.</div>
+            <div class="activity-meta">
+              <span>⏱ Full Day</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legoland Water Park -->
+        <div class="activity-card" data-cat="theme-park" data-id="legoland-waterpark" id="legoland-waterpark">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/theme/waterpark.jpg" alt="Legoland Water Park" class="activity-img">
+            <span class="activity-cat">Theme Park</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Legoland Water Park</div>
+            <div class="activity-location">📍 Dubai Parks &amp; Resorts</div>
+            <div class="activity-desc">LEGOLAND Water Park is the only water park in the UAE designed especially for
+              kids
+              aged 2–12 and their families.</div>
+            <div class="activity-meta">
+              <span>⏱ Full Day</span>
+              <span>👥 Families</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Legoland — hotel linked -->
+        <div class="activity-card" data-cat="theme-park" data-id="legoland" id="legoland">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/theme/legoland.jpg" alt="Legoland Dubai" class="activity-img">
+            <span class="activity-cat">Theme Park</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Legoland Dubai</div>
+            <div class="activity-location">📍 Dubai Parks &amp; Resorts</div>
+            <div class="activity-desc">Over 40 LEGO-themed rides, shows and attractions across six lands — perfect for
+              families with younger children who love building and imagination.</div>
+            <div class="activity-meta">
+              <span>⏱ Full Day</span>
+              <span>👥 Families</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Riverland — hotel linked -->
+        <div class="activity-card" data-cat="theme-park" data-id="riverland" id="riverland">
+          <div class="activity-img-wrap">
+            <img src="thingstodo/theme/riverland.jpg" alt="Riverland Dubai" class="activity-img">
+            <span class="activity-cat">Theme Park</span>
+            <span class="gallery-hint">📷 View Gallery</span>
+          </div>
+          <div class="activity-body">
+            <div class="activity-name">Riverland Dubai</div>
+            <div class="activity-location">📍 Dubai Parks &amp; Resorts</div>
+            <div class="activity-desc">A stunning open-air dining and entertainment destination stretching along 2km of
+              riverfront — the perfect gateway to all four Dubai Parks attractions.</div>
+            <div class="activity-meta">
+              <span>⏱ Half Day</span>
+              <span>👥 All Ages</span>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="home/logo1.png" class="footer-logo" alt="Holidae Logo">
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram" class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
+          <a href="#" aria-label="Facebook" class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg>
+          </a>
+          <a href="#" aria-label="WhatsApp" class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="home.html">Home</a>
+          <a href="destinations.html">Destinations</a>
+          <a href="luxury.html">Luxury Stays</a>
+          <a href="thingstodo.html">Things To Do</a>
+        </div>
+        <div class="footer-col">
+          <h4>Book</h4>
+          <a href="contact.html">Reservations</a>
+          <a href="contact.html">Group Enquiries</a>
+          <a href="contact.html">Corporate Packages</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="tel:+97142883190">+971 4 288 3190</a>
+          <a href="mailto:bookings@holidae.ae">bookings@holidae.ae</a>
+          <span>Office 7, Al Fattan Currency House<br>DIFC, Dubai</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Holidae. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#" onclick="openModal('privacy'); return false;">Privacy Policy</a>
+        <a href="#" onclick="openModal('terms'); return false;">Terms of Service</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ════════════════════════════════════════════════════ -->
+  <!--                  LIGHTBOX OVERLAY                   -->
+  <!-- ════════════════════════════════════════════════════ -->
+  <div class="lightbox-overlay" id="lightbox" role="dialog" aria-modal="true" aria-label="Activity Gallery">
+    <div class="lightbox-header">
+      <div>
+        <div class="lightbox-title" id="lbTitle">Activity Name</div>
+        <div class="lightbox-subtitle" id="lbSubtitle">Location</div>
+      </div>
+      <button class="lightbox-close" id="lbClose" aria-label="Close gallery">✕</button>
+    </div>
+    <div class="lightbox-body">
+      <img class="lb-main-img" id="lbMainImg" src="" alt="">
+      <div class="lb-gallery-grid" id="lbGallery"></div>
+      <div class="lb-info">
+        <div class="lb-info-desc" id="lbDesc"></div>
+        <div class="lb-info-tags" id="lbTags"></div>
+      </div>
+    </div>
+  </div>
+
+  <script>
+
+    const mainNav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      mainNav.classList.toggle('scrolled', window.scrollY > 30);
+    });
+
+
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    navToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
+    navMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => navMenu.classList.remove('open')));
+
+    // category filter
+    const catTabs = document.querySelectorAll('.cat-tab');
+    const allCards = document.querySelectorAll('.activity-card');
+
+    catTabs.forEach(tab => {
+      tab.addEventListener('click', function () {
+        catTabs.forEach(t => t.classList.remove('active'));
+        this.classList.add('active');
+        const cat = this.dataset.cat;
+        allCards.forEach(card => {
+          card.style.display = (cat === 'all' || card.dataset.cat === cat) ? 'block' : 'none';
+        });
+      });
+    });
+
+
+    const activities = {
+      'desert-safari': {
+        title: 'Desert Safari & Dune Bashing',
+        location: '📍 Dubai Desert',
+        desc: 'Experience the thrill of 4x4 dune bashing across the golden sands of the Arabian Desert. As the sun sets, settle into a traditional Bedouin camp for a spectacular evening of live entertainment, camel rides, henna painting, and a lavish dinner under a canopy of stars. A truly unforgettable Emirates experience.',
+        images: ['thingstodo/ds/desertsafarifinal.jpg', 'thingstodo/ds/desertsafari1.jpg', 'thingstodo/ds/desertsafari2.jpg', 'thingstodo/ds/desertsafari3.jpg', 'thingstodo/ds/desertsafari4.jpg', 'thingstodo/ds/desertsafari5.jpg'],
+        tags: ['⏱ Half Day', '👥 All Ages', '🌅 Sunset Tour', '🐪 Camel Rides']
+      },
+      'jebel-jais': {
+        title: 'Jebel Jais Flight Zipline',
+        location: '📍 Ras Al Khaimah',
+        desc: 'Soar through the crisp mountain air on the world\'s longest zipline, stretching over 2.8km at heights exceeding 1,600 metres above sea level. The dramatic Hajar Mountains provide a breathtaking backdrop as you reach speeds of up to 120km/h. A bucket-list adventure for thrill seekers in the UAE.',
+        images: ['thingstodo/jj/jebeljais.jpg', 'thingstodo/jj/jebeljais1.jpg', 'thingstodo/jj/jebeljais2.jpg', 'thingstodo/jj/jebeljais3.jpg', 'thingstodo/jj/jebeljais4.jpg'],
+        tags: ['⏱ 2–3 Hours', '👥 Adults', '🏔 Mountain Views', '🔥 Adrenaline']
+      },
+      'louvre': {
+        title: 'Louvre Abu Dhabi',
+        location: '📍 Saadiyat Island, Abu Dhabi',
+        desc: 'One of the most architecturally stunning museums in the world, the Louvre Abu Dhabi sits on the edge of the Arabian Gulf beneath a vast latticed dome that filters light into a breathtaking "rain of light" effect. Home to thousands of artworks from prehistoric artefacts to contemporary masterpieces.',
+        images: ['thingstodo/cult/louvre.jpg'],
+        tags: ['⏱ 2–4 Hours', '👥 All Ages', '🎨 Art', '🏛 Architecture']
+      },
+      'albidyah': {
+        title: 'Al Bidyah Mosque',
+        location: '📍 Fujairah',
+        desc: 'The oldest surviving mosque in the UAE, dating to 1446 AD, Al Bidyah is a remarkable example of traditional Islamic architecture built entirely from mud brick and gypsum. Set against the dramatic backdrop of the Hajar Mountains, this historical site is a peaceful and profound cultural experience.',
+        images: ['thingstodo/cult/alnuaimah.jpg', 'thingstodo/cult/alnuaimah1.jpg'],
+        tags: ['⏱ 1 Hour', '👥 All Ages', '🕌 Heritage', '📜 History']
+      },
+      'ajman-museum': {
+        title: 'Ajman Museum',
+        location: '📍 Ajman',
+        desc: 'Housed inside an 18th-century fort that once served as the ruler\'s palace, Ajman Museum offers a rich journey through the emirate\'s layered past. Exhibits range from ancient weapons, traditional manuscripts and archaeological finds to reconstructed living spaces that paint a vivid picture of Emirati life.',
+        images: ['thingstodo/cult/ajmanmuseum.jpg', 'thingstodo/cult/ajmanmuseum1.jpg', 'thingstodo/cult/ajmanmuseum2.jpg', 'thingstodo/cult/ajmanmuseum3.jpg'],
+        tags: ['⏱ 1–2 Hours', '👥 All Ages', '🏛 Museum', '🗡 Heritage']
+      },
+      'snoopy-island': {
+        title: 'Snorkelling at Snoopy Island',
+        location: '📍 Al Aqah, Fujairah',
+        desc: 'Named for its distinctive Snoopy-dog silhouette, this small rocky island off Fujairah\'s east coast is the UAE\'s premier snorkelling destination. Vibrant coral gardens, sea turtles, and kaleidoscopic fish await just metres from shore in crystal-clear Indian Ocean waters. Equipment hire is available at nearby beach resorts.',
+        images: ['thingstodo/beach/snorkelling.jpg', 'thingstodo/beach/snorkelling1.jpg', 'thingstodo/beach/snorkelling2.jpg', 'thingstodo/beach/snorkelling3.jpg', 'thingstodo/beach/snorkelling4.jpg'],
+        tags: ['⏱ Half Day', '👥 All Ages', '🐠 Marine Life', '🌊 East Coast']
+      },
+      'aquaventure': {
+        title: 'Aquaventure Waterpark',
+        location: '📍 Atlantis The Palm, Dubai',
+        desc: 'Set within the iconic Atlantis resort on the Palm Jumeirah, Aquaventure is consistently rated among the world\'s top waterparks. With over 105 slides and rides, a 1.6km lazy river, a private beach, and dedicated zones for all ages, it promises an unforgettable full day of family thrills.',
+        images: ['thingstodo/fam/aquaventure.jpg', 'thingstodo/fam/aquaventure1.jpg', 'thingstodo/fam/aquaventure2.jpg', 'thingstodo/fam/aquaventure3.jpg', 'thingstodo/fam/aquaventure4.jpg'],
+        tags: ['⏱ Full Day', '👥 Families', '🎢 Rides', '🏖 Private Beach']
+      },
+      'wadi': {
+        title: 'Wild Wadi Waterpark',
+        location: '📍 Jumeirah, Dubai',
+        desc: 'Set in the heart of Dubai with iconic views of the Burj Al Arab, Wild Wadi Waterpark is one of the city’s most popular family attractions. Inspired by the tales of Juha, the park features over 30 rides and attractions, from high-speed slides and wave pools to a relaxing lazy river. With dedicated play areas for younger children and plenty of spots to unwind, it offers a full day of excitement and entertainment for visitors of all ages.',
+        images: ['thingstodo/fam/wadi.jpg', 'thingstodo/fam/wadi1.jpg', 'thingstodo/fam/wadi2.jpg', 'thingstodo/fam/wadi3.jpg', 'thingstodo/fam/wadi4.jpg', 'thingstodo/fam/wadi5.jpg'],
+        tags: ['⏱ Full Day', '👥 Families', '🎢 Rides', '🏖 Private Beach']
+      },
+      'warner-bros': {
+        title: 'Warner Bros. World Abu Dhabi',
+        location: '📍 Yas Island, Abu Dhabi',
+        desc: 'Step into the worlds of DC Super Heroes, Looney Tunes, Hanna-Barbera, and more at this stunning 1.65 million sq ft indoor theme park. Six immersive themed lands house over 29 rides, live shows and character experiences — all under a climate-controlled roof, making it perfect year-round. Included with Warner Bros. World hotel packages.',
+        images: ['thingstodo/theme/warner.jpg', 'thingstodo/theme/warner1.jpg', 'thingstodo/theme/warner2.jpg', 'thingstodo/theme/warner3.jpg', 'thingstodo/theme/warner4.jpg', 'thingstodo/theme/warner5.jpg', 'thingstodo/theme/warner6.jpg', 'thingstodo/theme/warner7.jpg'],
+        tags: ['⏱ Full Day', '👥 All Ages', '🦸 DC Heroes', '🐰 Looney Tunes', '🎠 29+ Rides']
+      },
+      'seaworld': {
+        title: 'SeaWorld Abu Dhabi',
+        location: '📍 Yas Island, Abu Dhabi',
+        desc: 'The Middle East\'s first SeaWorld park opened on Yas Island in 2023, offering eight themed realms of marine wonder. From thrilling rides inspired by ocean creatures to up-close animal encounters and educational conservation experiences, SeaWorld Abu Dhabi is a landmark attraction unlike any other in the region. Included with Warner Bros. World hotel packages.',
+        images: ['thingstodo/theme/seaworld.jpg', 'thingstodo/theme/seaworld1.jpg', 'thingstodo/theme/seaworld2.jpg', 'thingstodo/theme/seaworld3.jpg', 'thingstodo/theme/seaworld4.jpg', 'thingstodo/theme/seaworld5.jpg'],
+        tags: ['⏱ Full Day', '👥 All Ages', '🐬 Marine Life', '🎢 Rides', '🌊 8 Realms']
+      },
+      'ferrari-world': {
+        title: 'Ferrari World Abu Dhabi',
+        location: '📍 Yas Island, Abu Dhabi',
+        desc: 'Beneath the world\'s largest space frame structure, Ferrari World Abu Dhabi delivers an unrivalled celebration of speed, passion and Italian design. Ride Formula Rossa — the planet\'s fastest roller coaster reaching 240km/h — and discover over 40 Ferrari-themed attractions. Included with Hilton Yas Island hotel packages.',
+        images: ['thingstodo/theme/ferrariworld.jpg', 'thingstodo/theme/ferrariworld1.jpg', 'thingstodo/theme/ferrariworld2.jpg', 'thingstodo/theme/ferrariworld3.jpg', 'thingstodo/theme/ferrariworld4.jpg', 'thingstodo/theme/ferrariworld5.jpg', 'thingstodo/theme/ferrariworld6.jpg', 'thingstodo/theme/ferrariworld7.jpg'],
+        tags: ['⏱ Full Day', '👥 All Ages', '🏎 Formula Rossa', '⚡ 240km/h', '40+ Rides']
+      },
+      'yas-waterworld': {
+        title: 'Yas Waterworld',
+        location: '📍 Yas Island, Abu Dhabi',
+        desc: 'Inspired by the legend of a pearl diver searching for a magical pearl, Yas Waterworld weaves storytelling through over 45 rides, slides and attractions across six zones. The world\'s first hydromagnetic tornado waterslide and the 238m Bandit Bomber zip-line are among its most celebrated highlights. Included with Hilton Yas Island packages.',
+        images: ['thingstodo/theme/yaswaterworld.jpg', 'thingstodo/theme/yaswaterworld1.jpg', 'thingstodo/theme/yaswaterworld2.jpg', 'thingstodo/theme/yaswaterworld3.jpg', 'thingstodo/theme/yaswaterworld4.jpg', 'thingstodo/theme/yaswaterworld5.jpg', 'thingstodo/theme/yaswaterworld6.jpg', 'thingstodo/theme/yaswaterworld7.jpg', 'thingstodo/theme/yaswaterworld8.jpg', 'thingstodo/theme/yaswaterworld9.jpg'],
+        tags: ['⏱ Full Day', '👥 Families', '💧 45+ Rides', '🌊 6 Zones', '🏆 Award Winning']
+      },
+      'motiongate': {
+        title: 'Motiongate Dubai',
+        location: '📍 Dubai Parks & Resorts',
+        desc: 'Hollywood\'s biggest studios come to life at Motiongate Dubai — the region\'s largest movie-themed park. Three zones dedicated to DreamWorks Animation, Sony Pictures and Lionsgate feature immersive rides, live shows and themed restaurants. Highlights include The Hunger Games and How to Train Your Dragon experiences. Available with Dubai Parks hotel packages.',
+        images: ['thingstodo/theme/motiongate.jpg', 'thingstodo/theme/motiongate1.jpg', 'thingstodo/theme/motiongate2.jpg', 'thingstodo/theme/motiongate3.jpg', 'thingstodo/theme/motiongate4.jpg', 'thingstodo/theme/motiongate5.jpg', 'thingstodo/theme/motiongate6.jpg', 'thingstodo/theme/motiongate7.jpg'],
+        tags: ['⏱ Full Day', '👥 All Ages', '🎬 Hollywood', '🎢 27+ Rides', '🎭 Live Shows']
+      },
+      'legoland-waterpark': {
+        title: 'Legoland Water Park',
+        location: '📍 Dubai Parks & Resorts',
+        desc: 'Dive into a world of fun with interactive attractions—from the Joker Soaker and Splash Safari to building your very own LEGO® raft. Slip, slide, and splash your way through a day packed with adventure! Perfect for families with younger kids, this water park offers a refreshing break from the desert heat. Available with Dubai Parks hotel packages.',
+        images: ['thingstodo/theme/waterpark.jpg', 'thingstodo/theme/waterpark1.jpg', 'thingstodo/theme/waterpark2.jpg', 'thingstodo/theme/waterpark3.jpg', 'thingstodo/theme/waterpark4.jpg', 'thingstodo/theme/waterpark5.jpg', 'thingstodo/theme/waterpark6.jpg', 'thingstodo/theme/waterpark7.jpg', 'thingstodo/theme/waterpark8.jpg', 'thingstodo/theme/waterpark9.jpg'],
+        tags: ['⏱ Full Day', '👥 Families', '🎭 Live Shows', '💃 Dance', '🎬 5 Zones']
+      },
+      'legoland': {
+        title: 'Legoland Dubai',
+        location: '📍 Dubai Parks & Resorts',
+        desc: 'A colourful kingdom of imagination built for families with children aged 2–12. Over 40 LEGO-themed rides, shows and building experiences spread across six fantastical lands. MINILAND recreates iconic Middle Eastern landmarks from millions of LEGO bricks, while driving schools and water play areas add to the fun. Available with Dubai Parks packages.',
+        images: ['thingstodo/theme/legoland.jpg', 'thingstodo/theme/legoland1.jpg', 'thingstodo/theme/legoland2.jpg', 'thingstodo/theme/legoland3.jpg', 'thingstodo/theme/legoland4.jpg', 'thingstodo/theme/legoland5.jpg', 'thingstodo/theme/legoland6.jpg', 'thingstodo/theme/legoland7.jpg'],
+        tags: ['⏱ Full Day', '👥 Families', '🧱 LEGO', '40+ Rides', '🏙 Miniland']
+      },
+      'riverland': {
+        title: 'Riverland Dubai',
+        location: '📍 Dubai Parks & Resorts',
+        desc: 'Stretching 2km along a man-made river, Riverland Dubai is the gateway district connecting all four Dubai Parks venues. Three distinct districts — The Peninsula, France, and India Gate — each offer unique dining, shopping, and entertainment. The perfect spot to begin or end your Dubai Parks day. Available with Dubai Parks packages.',
+        images: ['thingstodo/theme/riverland.jpg', 'thingstodo/theme/riverland1.jpg', 'thingstodo/theme/riverland2.jpg', 'thingstodo/theme/riverland3.jpg', 'thingstodo/theme/riverland4.jpg', 'thingstodo/theme/riverland5.jpg', 'thingstodo/theme/riverland6.jpg'],
+        tags: ['⏱ Half Day', '👥 All Ages', '🍽 Dining', '🛍 Shopping', '🎡 Entertainment']
+      }
+    };
+
+    // Lightbox logic - developed with assistance from Claude AI
+    const lightbox = document.getElementById('lightbox');
+    const lbTitle = document.getElementById('lbTitle');
+    const lbSubtitle = document.getElementById('lbSubtitle');
+    const lbMainImg = document.getElementById('lbMainImg');
+    const lbGallery = document.getElementById('lbGallery');
+    const lbDesc = document.getElementById('lbDesc');
+    const lbTags = document.getElementById('lbTags');
+    const lbClose = document.getElementById('lbClose');
+
+    function openLightbox(id) {
+      const data = activities[id];
+      if (!data) return;
+
+      lbTitle.textContent = data.title;
+      lbSubtitle.textContent = data.location;
+      lbMainImg.src = data.images[0];
+      lbMainImg.alt = data.title;
+      lbDesc.textContent = data.desc;
+
+      // Tags
+      lbTags.innerHTML = data.tags.map(t => `<span class="lb-tag">${t}</span>`).join('');
+
+      // Gallery thumbnails
+      lbGallery.innerHTML = data.images.map((img, i) => `
+        <div class="lb-gallery-item ${i === 0 ? 'active' : ''}" onclick="switchImage(this, '${img}')">
+          <img src="${img}" alt="${data.title} photo ${i + 1}" loading="lazy">
+        </div>
+      `).join('');
+
+      lightbox.classList.add('open');
+      document.body.style.overflow = 'hidden';
+      lbClose.focus();
+    }
+
+    function switchImage(el, src) {
+      lbMainImg.src = src;
+      document.querySelectorAll('.lb-gallery-item').forEach(i => i.classList.remove('active'));
+      el.classList.add('active');
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
+    lbClose.addEventListener('click', closeLightbox);
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox(); });
+    document.addEventListener('keydown', e => { if (e.key === 'Escape') closeLightbox(); });
+
+    document.querySelectorAll('.activity-card').forEach(card => {
+      card.addEventListener('click', () => openLightbox(card.dataset.id));
+    });
+
+
+    function handleHash() {
+      const hash = window.location.hash.replace('#', '');
+      if (hash && activities[hash]) {
+        const el = document.getElementById(hash);
+        if (el) {
+          setTimeout(() => {
+            el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            setTimeout(() => openLightbox(hash), 500);
+          }, 300);
+        }
+      }
+    }
+    window.addEventListener('load', handleHash);
+    window.addEventListener('hashchange', handleHash);
+  </script>
+
+  <!-- Privacy Policy Modal -->
+  <div class="modal-backdrop" id="modalPrivacy">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('privacy')" aria-label="Close">✕</button>
+      <h2>Privacy Policy</h2>
+      <span class="modal-date">Last updated: January 2026</span>
+
+      <p>Holidae is committed to protecting your personal information. This policy explains what we collect, why we
+        collect it, and how we use it.</p>
+
+      <hr class="modal-divider">
+
+      <h3>What We Collect</h3>
+      <p>When you submit a booking enquiry through our website, we collect:</p>
+      <ul>
+        <li>Your name, email address, and phone number</li>
+        <li>Travel dates, destination preferences, and guest numbers</li>
+        <li>Any special requests you provide in the message field</li>
+      </ul>
+
+      <h3>How We Use It</h3>
+      <p>We use your information solely to process and confirm your holiday booking. We may contact you by email or
+        phone to follow up on your enquiry. We do not sell, share, or pass your data to third parties for marketing
+        purposes.</p>
+
+      <h3>Cookies</h3>
+      <p>Our website uses only essential cookies required for the site to function correctly. We do not use tracking or
+        advertising cookies.</p>
+
+      <h3>Data Retention</h3>
+      <p>Booking enquiry data is retained for up to 12 months after your travel date, after which it is securely
+        deleted. You may request deletion of your data at any time by contacting us at bookings@holidae.ae.</p>
+
+      <h3>Your Rights</h3>
+      <p>You have the right to access, correct, or delete any personal data we hold about you. To make a request, email
+        us at bookings@holidae.ae and we will respond within 5 working days.</p>
+
+      <h3>Contact</h3>
+      <p>For any privacy-related questions, contact our team at bookings@holidae.ae or call +971 4 288 3190.</p>
+    </div>
+  </div>
+
+  <!-- Terms of Service Modal -->
+  <div class="modal-backdrop" id="modalTerms">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('terms')" aria-label="Close">✕</button>
+      <h2>Terms of Service</h2>
+      <span class="modal-date">Last updated: January 2026</span>
+
+      <p>By using the Holidae website and submitting a booking enquiry, you agree to the following terms and conditions.
+      </p>
+
+      <hr class="modal-divider">
+
+      <h3>Bookings & Confirmation</h3>
+      <p>Submitting a booking form does not guarantee a confirmed reservation. All bookings are subject to availability
+        and will be confirmed by our team within 24 hours via email or phone.</p>
+
+      <h3>Pricing</h3>
+      <p>All prices displayed are indicative and quoted in UAE Dirhams (AED). Final pricing will be confirmed at the
+        time of booking. Holidae reserves the right to adjust prices due to availability, seasonal changes, or supplier
+        pricing updates.</p>
+
+      <h3>Cancellations & Amendments</h3>
+      <ul>
+        <li>Free amendments or cancellations are permitted up to 48 hours before your check-in date.</li>
+        <li>Cancellations made within 48 hours of check-in may be subject to a cancellation fee of up to one night's
+          stay.</li>
+        <li>No-shows will be charged the full booking amount.</li>
+      </ul>
+
+      <h3>Liability</h3>
+      <p>Holidae acts as an agent between customers and hotel/experience providers. We are not liable for any changes,
+        disruptions, or cancellations made directly by third-party providers. We will always work to find suitable
+        alternatives where possible.</p>
+
+      <h3>Website Use</h3>
+      <p>All content on this website is for informational purposes. Images are representative and may not reflect the
+        exact room or view you receive. We make every effort to ensure accuracy but cannot guarantee that all content is
+        up to date at all times.</p>
+
+      <h3>Governing Law</h3>
+      <p>These terms are governed by the laws of the United Arab Emirates. Any disputes will be subject to the
+        jurisdiction of the courts of Dubai, UAE.</p>
+    </div>
+  </div>
+
+  <script>
+    function openModal(type) {
+      document.getElementById(type === 'privacy' ? 'modalPrivacy' : 'modalTerms').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(type) {
+      document.getElementById(type === 'privacy' ? 'modalPrivacy' : 'modalTerms').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    // close on backdrop click
+    document.querySelectorAll('.modal-backdrop').forEach(el => {
+      el.addEventListener('click', function (e) {
+        if (e.target === this) {
+          this.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+    // close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop.open').forEach(el => {
+          el.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>

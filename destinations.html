@@ -1,0 +1,1570 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Destinations – Holidae</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #4a0a1a;
+      color: #faecc2;
+      overflow-x: hidden;
+    }
+
+    /* nav */
+    nav {
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      justify-content: space-between;
+      background: rgba(74, 10, 26, 0.75);
+      backdrop-filter: blur(0px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+      border-bottom: 1px solid transparent;
+      transition: backdrop-filter 0.4s ease, background 0.4s ease, border-color 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(74, 10, 26, 0.85);
+      backdrop-filter: blur(18px);
+      border-color: rgba(245, 215, 142, 0.15);
+    }
+
+    .nav-logo {
+      width: 290px;
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: #faecc2;
+      border-radius: 2px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #faecc2;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      transition: color 0.3s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: #f5d78e;
+    }
+
+    /* top section */
+    .hero-banner {
+      position: relative;
+      background: linear-gradient(135deg, #1a0508 0%, #4a0a1a 50%, #6b1028 100%);
+      padding: 80px 40px 70px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 20% 50%, rgba(245, 215, 142, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245, 215, 142, 0.06) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: transparent;
+    }
+
+    .hero-eyebrow {
+      font-size: 20px;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-banner h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      color: whitesmoke;
+      font-weight: 700;
+      line-height: 1.1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-banner h1 em {
+      font-style: italic;
+      color: #f5d78e;
+    }
+
+    .hero-banner p {
+      color: rgba(245, 231, 198, 0.92);
+      margin-top: 14px;
+      font-size: 1rem;
+      max-width: 500px;
+      margin-inline: auto;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+
+    .filter-bar {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      max-width: 700px;
+      margin: 80px auto 0;
+      background: whitesmoke;
+      border-radius: 8px;
+      overflow: hidden;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+      position: relative;
+      z-index: 1;
+    }
+
+    .filter-bar svg {
+      margin-left: 16px;
+      color: #4a0a1a;
+      flex-shrink: 0;
+    }
+
+    .filter-bar input {
+      flex: 1;
+      border: none;
+      outline: none;
+      padding: 14px 16px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      color: #4a0a1a;
+      background: transparent;
+    }
+
+    .filter-bar input::placeholder {
+      color: #6b1028;
+    }
+
+    .filter-clear {
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 14px 16px;
+      color: #6b1028;
+      font-size: 1.1rem;
+      transition: color 0.2s;
+    }
+
+    .filter-clear:hover {
+      color: #4a0a1a;
+    }
+
+    /* tab bar */
+    .emirate-tabs {
+      background: whitesmoke;
+      border-bottom: 1px solid #4a1020;
+      position: sticky;
+      top: 70px;
+      z-index: 900;
+    }
+
+    .emirate-tabs-inner {
+      display: flex;
+      max-width: 1320px;
+      margin: 0 auto;
+      padding: 0 60px;
+      overflow-x: auto;
+      gap: 0;
+      scrollbar-width: none;
+    }
+
+    .emirate-tabs-inner::-webkit-scrollbar {
+      display: none;
+    }
+
+    .emirate-tab {
+      flex-shrink: 0;
+      padding: 16px 28px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      color: #6b1028;
+      text-decoration: none;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      border-bottom: 3px solid transparent;
+      margin-top: 10px;
+      margin-bottom: 10px;
+      background: none;
+      border-top: none;
+      border-left: none;
+      border-right: none;
+      cursor: pointer;
+      font-family: 'DM Sans', sans-serif;
+      transition: color 0.2s, border-color 0.2s;
+    }
+
+    .emirate-tab:hover,
+    .emirate-tab.active {
+      color: #4a0a1a;
+      border-color: #8b1a38;
+    }
+
+
+    .emirate-label {
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      padding: 48px 60px 0;
+      max-width: 1320px;
+      margin: 0 auto;
+    }
+
+    .emirate-label h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      font-weight: 700;
+      white-space: nowrap;
+      color: #f5d78e;
+      margin: 0;
+    }
+
+    .emirate-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      margin-left: 16px;
+      background: linear-gradient(to right, #f5d78e, rgba(245, 215, 142, 0));
+    }
+
+
+    .emirate-section {
+      padding: 28px 60px 60px;
+      max-width: 1320px;
+      background: #4a0a1a;
+      margin: 0 auto;
+    }
+
+
+    .cards-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    /* cards */
+    .card {
+      background: whitesmoke;
+      border: 1px solid #4a1020;
+      border-radius: 16px;
+      overflow: hidden;
+      box-shadow: 0 12px 40px rgba(0, 0, 0, 0.45);
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .card:hover {
+      transform: translateY(-6px);
+      box-shadow: 0 18px 54px rgba(0, 0, 0, 0.5);
+    }
+
+
+    .card-img-wrap {
+      position: relative;
+      height: 220px;
+      overflow: hidden;
+    }
+
+    .card-img-wrap img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.5s ease;
+    }
+
+    .card:hover .card-img-wrap img {
+      transform: scale(1.06);
+    }
+
+
+    .badge {
+      position: absolute;
+      top: 20px;
+      left: -4px;
+      background: #4a0a1a;
+      color: #f5d78e;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      padding: 6px 16px 6px 12px;
+      clip-path: polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%);
+      border-left: 3px solid #f5d78e;
+    }
+
+    .badge.gold {
+      background: #4a0a1a;
+      color: #f5d78e;
+      border-left: none;
+      clip-path: polygon(0 0, 100% 0, 94% 50%, 100% 100%, 0 100%);
+    }
+
+
+    .stars {
+      color: #f5c800;
+      font-size: 0.9rem;
+      margin-bottom: 10px;
+      letter-spacing: 2px;
+    }
+
+
+    .card-body {
+      padding: 22px 24px 0;
+      flex: 1;
+    }
+
+    .card-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #8b1a38;
+      margin-bottom: 4px;
+    }
+
+    .card-location {
+      font-size: 0.82rem;
+      color: #8b1a38;
+      margin-bottom: 14px;
+    }
+
+    .card-details {
+      border-top: 1px solid #8b1a38;
+      padding-top: 14px;
+      font-size: 0.85rem;
+      color: #8b1a38;
+      line-height: 1.7;
+    }
+
+
+    .card-price-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 16px 24px 0;
+    }
+
+    .price-label {
+      font-size: 0.76rem;
+      color: #8b1a38;
+    }
+
+    .price {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.8rem;
+      font-weight: 700;
+      color: #8b1a38;
+    }
+
+
+    .card-cta {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #6b1028;
+      color: #f5d78e;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem;
+      font-weight: 700;
+      padding: 16px 24px;
+      text-decoration: none;
+      border: none;
+      cursor: pointer;
+      margin-top: 16px;
+      transition: background 0.2s, transform 0.2s;
+      letter-spacing: 0.04em;
+    }
+
+    .card-cta:hover {
+      background: #8b1a38;
+      transform: translateY(-1px);
+    }
+
+    .card-cta svg {
+      transition: transform 0.2s;
+    }
+
+    .card-cta:hover svg {
+      transform: translateX(4px);
+    }
+
+    /* No results */
+    .no-results {
+      display: none;
+      text-align: center;
+      color: #6b1028;
+      font-size: 1.1rem;
+      padding: 40px 0;
+      grid-column: 1 / -1;
+    }
+
+
+
+    /* footer */
+    footer {
+      background: #0d0205;
+      color: rgba(245, 215, 142, 0.75);
+      border-top: 1px solid #4a1020;
+      padding: 0;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 56px 48px 40px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .footer-logo {
+      width: 300px;
+      margin-bottom: 5px;
+      opacity: 0.9;
+    }
+
+    .footer-socials {
+      padding-left: 100px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(245, 215, 142, 0.07);
+      border: 1px solid #4a1020;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f5d78e;
+      text-decoration: none;
+      transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    }
+
+    .social-btn:hover {
+      background: rgba(245, 215, 142, 0.15);
+      border-color: rgba(245, 215, 142, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f5d78e;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .footer-col a,
+    .footer-col span {
+      display: block;
+      font-size: 0.84rem;
+      color: rgba(245, 215, 142, 0.75);
+      text-decoration: none;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: #f5d78e;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #4a1020;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: rgba(245, 215, 142, 0.4);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-bottom-links a {
+      color: rgba(245, 215, 142, 0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-bottom-links a:hover {
+      color: #f5d78e;
+    }
+
+    @media (max-width: 860px) {
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 40px 24px 28px;
+      }
+
+      .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 24px;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .footer-links {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    /* responsive */
+    @media (max-width: 1050px) {
+      .cards-grid {
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 900px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-logo {
+        width: 150px;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(74, 10, 26, 0.97);
+        padding: 20px 24px;
+        gap: 18px;
+        backdrop-filter: blur(12px);
+      }
+
+      nav ul.open {
+        display: flex;
+      }
+
+      .hero-banner {
+        padding: 60px 20px 70px;
+      }
+
+      .emirate-tabs-inner {
+        padding: 0 16px;
+      }
+
+      .emirate-tab {
+        padding: 14px 16px;
+        font-size: 0.8rem;
+      }
+
+      .emirate-label {
+        padding: 36px 20px 0;
+      }
+
+      .emirate-section {
+        padding: 20px 20px 48px;
+      }
+
+      .cards-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+
+    /* privacy/terms footer */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 2, 5, 0.82);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #1a0508;
+      border: 1px solid #4a1020;
+      border-radius: 16px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 40px 44px;
+      position: relative;
+      animation: modalIn 0.25s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: rgba(245, 215, 142, 0.75);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #f5d78e;
+    }
+
+    .modal-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: #faecc2;
+      margin-bottom: 6px;
+    }
+
+    .modal-box .modal-date {
+      font-size: 0.75rem;
+      color: rgba(245, 215, 142, 0.75);
+      opacity: 0.55;
+      margin-bottom: 28px;
+      display: block;
+    }
+
+    .modal-box h3 {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f5d78e;
+      margin: 22px 0 8px;
+    }
+
+    .modal-box p,
+    .modal-box li {
+      font-size: 0.88rem;
+      color: rgba(245, 215, 142, 0.75);
+      line-height: 1.75;
+    }
+
+    .modal-box ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    .modal-box ul li {
+      margin-bottom: 6px;
+    }
+
+    .modal-divider {
+      border: none;
+      border-top: 1px solid #4a1020;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 600px) {
+      .modal-box {
+        padding: 28px 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <nav id="mainNav">
+    <img src="home/logo1.png" class="nav-logo" alt="Holidae Logo">
+
+    <button class="nav-toggle" id="navToggle" aria-label="Open menu">
+      <span></span><span></span><span></span>
+    </button>
+
+    <ul id="navMenu">
+      <li><a href="home.html">HOME</a></li>
+      <li><a href="destinations.html" class="active">DESTINATIONS</a></li>
+      <li><a href="luxury.html">LUXURY STAYS</a></li>
+      <li><a href="thingstodo.html">THINGS TO DO</a></li>
+      <li><a href="contact.html">RESERVATIONS</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+
+    <div class="hero-banner">
+      <p class="hero-eyebrow">✦ Extraordinary Escapes ✦</p>
+      <h1>Explore the <em>Emirates</em></h1>
+      <p>Five stunning destinations. Handpicked hotels. Unbeatable prices.</p>
+
+
+      <div class="filter-bar">
+        <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+          stroke-linecap="round" stroke-linejoin="round">
+          <circle cx="11" cy="11" r="8" />
+          <line x1="21" y1="21" x2="16.65" y2="16.65" />
+        </svg>
+        <input type="text" id="globalSearch" placeholder="Search hotels across all destinations…">
+        <button class="filter-clear" id="clearSearch" title="Clear search">✕</button>
+      </div>
+    </div>
+
+
+    <nav class="emirate-tabs" aria-label="Emirate navigation">
+      <div class="emirate-tabs-inner">
+        <a href="#dubai" class="emirate-tab active">Dubai</a>
+        <a href="#abudhabi" class="emirate-tab">Abu Dhabi</a>
+        <a href="#rak" class="emirate-tab">Ras Al Khaimah</a>
+        <a href="#fujairah" class="emirate-tab">Fujairah</a>
+        <a href="#ajman" class="emirate-tab">Ajman</a>
+      </div>
+    </nav>
+
+    <!-- ___DUBAI___ -->
+    <div class="emirate-label" id="dubai">
+      <h2>🏙️ Dubai</h2>
+    </div>
+    <section class="emirate-section">
+      <div class="cards-grid" id="dubaiGrid">
+
+        <!-- DUBAI CARD 1 -->
+        <div class="card" data-name="andaz dubai palm" data-location="palm jumeirah dubai">
+          <div class="card-img-wrap">
+            <img src="destination/andaz.jpg" alt="Andaz Dubai The Palm">
+            <span class="badge gold">Exclusive Offer</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Andaz The Palm, by Hyatt</div>
+            <div class="card-location">Palm Jumeirah | Dubai</div>
+            <div class="card-details">7 Nights &bull; Double Andaz Room, Sea View &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 854</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- DUBAI CARD 2 -->
+        <div class="card" data-name="atlantis palm" data-location="palm jumeirah dubai">
+          <div class="card-img-wrap">
+            <img src="destination/atlantis.jpg" alt="Atlantis The Palm">
+            <span class="badge gold">Top Seller</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Atlantis The Palm</div>
+            <div class="card-location">Palm Jumeirah | Dubai</div>
+            <div class="card-details">5 Nights &bull; Ocean King Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED
+              1,329</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- DUBAI CARD 3 -->
+        <div class="card" data-name="fairmont palm" data-location="palm jumeirah dubai">
+          <div class="card-img-wrap">
+            <img src="destination/fairmontdxb.jpg" alt="Fairmont The Palm">
+            <span class="badge">Top Seller</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Fairmont The Palm</div>
+            <div class="card-location">Palm Jumeirah | Dubai</div>
+            <div class="card-details">7 Nights &bull; Double Fairmont Heritage Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 821</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- DUBAI CARD 4 -->
+        <div class="card" data-name="ja lake view hotel" data-location="jabel ali dubai">
+          <div class="card-img-wrap">
+            <img src="destination/JA.jpg" alt="JA Lake View Hotel">
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">JA Lake View Hotel</div>
+            <div class="card-location">Jabel Ali | Dubai</div>
+            <div class="card-details">7 Nights &bull; Deluxe Lake View Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 695</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- DUBAI CARD 5 -->
+        <div class="card" data-name="rixos palm dubai suites" data-location="palm jumeirah dubai">
+          <div class="card-img-wrap">
+            <img src="destination/rixos.jpg" alt="Rixos The Palm Dubai">
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Rixos The Palm Dubai &amp; Suites</div>
+            <div class="card-location">Palm Jumeirah | Dubai</div>
+            <div class="card-details">7 Nights &bull; Deluxe Room Garden View &bull; All Inclusive</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 821</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- DUBAI CARD 6 -->
+        <div class="card" data-name="sofitel dubai palm" data-location="palm jumeirah dubai">
+          <div class="card-img-wrap">
+            <img src="destination/sofitel.jpg" alt="Sofitel Dubai The Palm">
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Sofitel Dubai The Palm</div>
+            <div class="card-location">Palm Jumeirah | Dubai</div>
+            <div class="card-details">7 Nights &bull; Double Classic Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 780</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <p class="no-results" id="dubaiNoResults">No hotels match your search in Dubai.</p>
+      </div>
+    </section>
+
+
+    <!-- ABU DHABI -->
+    <div class="emirate-label" id="abudhabi">
+      <h2>🕌 Abu Dhabi</h2>
+    </div>
+    <section class="emirate-section">
+      <div class="cards-grid" id="abudhabiGrid">
+
+        <!-- ABU DHABI CARD 1 -->
+        <div class="card" data-name="emirates palace mandarin oriental abu dhabi" data-location="corniche abu dhabi">
+          <div class="card-img-wrap">
+            <img src="destination/emiratespalace.jpg" alt="Emirates Palace">
+            <span class="badge gold">Iconic</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Emirates Palace Mandarin Oriental</div>
+            <div class="card-location">Corniche | Abu Dhabi</div>
+            <div class="card-details">5 Nights &bull; Deluxe Sea View Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED
+              1,850</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- ABU DHABI CARD 2 -->
+        <div class="card" data-name="yas island rotana abu dhabi" data-location="yas island abu dhabi">
+          <div class="card-img-wrap">
+            <img src="destination/rahabeach.jpg" alt="Yas Island Rotana">
+            <span class="badge">Top Seller</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Al Raha Beach Hotel</div>
+            <div class="card-location">Al Raha | Abu Dhabi</div>
+            <div class="card-details">7 Nights &bull; Superior King Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 720</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- ABU DHABI CARD 3 -->
+        <div class="card" data-name="saadiyat rotana resort spa abu dhabi" data-location="saadiyat island abu dhabi">
+          <div class="card-img-wrap">
+            <img src="destination/saadiyatrotana.jpg" alt="Saadiyat Rotana Resort">
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Saadiyat Rotana Resort &amp; Spa</div>
+            <div class="card-location">Saadiyat Island | Abu Dhabi</div>
+            <div class="card-details">7 Nights &bull; Deluxe Beach Room &bull; Half Board</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 980</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- ABU DHABI CARD 4 -->
+        <div class="card" data-name="holiday inn abu dhabi" data-location="airport road abu dhabi">
+          <div class="card-img-wrap">
+            <img src="destination/holidayinn.jpg" alt="Holiday Inn">
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★☆
+            </div>
+            <div class="card-title">Holiday Inn</div>
+            <div class="card-location">Airport Road | Abu Dhabi</div>
+            <div class="card-details">7 Nights &bull; Deluxe Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 980</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- ABU DHABI CARD 5 -->
+        <div class="card" data-name="marriott hotel downtown abu dhabi" data-location="downtown abu dhabi">
+          <div class="card-img-wrap">
+            <img src="destination/marriott.jpg" alt="Marriott Hotel Downtown Abu Dhabi">
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★☆
+            </div>
+            <div class="card-title">Marriott Hotel Downtown</div>
+            <div class="card-location">Downtown | Abu Dhabi</div>
+            <div class="card-details">7 Nights &bull; Deluxe Room &bull; Half Board</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 980</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <p class="no-results" id="aboudhabiNoResults">No hotels match your search in Abu Dhabi.</p>
+      </div>
+    </section>
+
+    <!-- RAS AL KHAIMAH -->
+    <div class="emirate-label" id="rak">
+      <h2>⛰️ Ras Al Khaimah</h2>
+    </div>
+    <section class="emirate-section">
+      <div class="cards-grid" id="rakGrid">
+
+        <!-- RAK CARD 1 -->
+        <div class="card" data-name="rixos bab al bahr ras al khaimah" data-location="al marjan island ras al khaimah">
+          <div class="card-img-wrap">
+            <img src="destination/rixosrak.jpg" alt="Rixos Bab Al Bahr">
+            <span class="badge gold">All Inclusive</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Rixos Bab Al Bahr</div>
+            <div class="card-location">Al Marjan Island | Ras Al Khaimah</div>
+            <div class="card-details">7 Nights &bull; Superior Sea View Room &bull; Ultra All Inclusive</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED
+              1,100</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- RAK CARD 2 -->
+        <div class="card" data-name="waldorf astoria ras al khaimah" data-location="ras al khaimah">
+          <div class="card-img-wrap">
+            <img src="destination/waldorfrak.jpg" alt="Waldorf Astoria RAK">
+            <span class="badge">Top Seller</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★☆
+            </div>
+            <div class="card-title">Waldorf Astoria Ras Al Khaimah</div>
+            <div class="card-location">Al Hamra | Ras Al Khaimah</div>
+            <div class="card-details">5 Nights &bull; King Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED
+              1,240</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- RAK CARD 3 -->
+        <div class="card" data-name="intercontinental ras al khaimah mina al arab resort spa"
+          data-location="ras al khaimah">
+          <div class="card-img-wrap">
+            <img src="destination/icrak.jpg" alt="InterContinental RAK">
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">InterContinental RAK Mina Al Arab</div>
+            <div class="card-location">Mina Al Arab | Ras Al Khaimah</div>
+            <div class="card-details">7 Nights &bull; Deluxe Lagoon View Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 860</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <p class="no-results" id="rakNoResults">No hotels match your search in Ras Al Khaimah.</p>
+      </div>
+    </section>
+
+    <!-- FUJAIRAH -->
+    <div class="emirate-label" id="fujairah">
+      <h2>🌊 Fujairah</h2>
+    </div>
+    <section class="emirate-section">
+      <div class="cards-grid" id="fujairahGrid">
+
+        <!-- FUJAIRAH CARD 1 -->
+        <div class="card" data-name="fairmont fujairah beach resort" data-location="al aqah fujairah">
+          <div class="card-img-wrap">
+            <img src="destination/fairmontfuj.jpg" alt="Fairmont Fujairah">
+            <span class="badge gold">Best Beach</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★☆
+            </div>
+            <div class="card-title">Fairmont Fujairah Beach Resort</div>
+            <div class="card-location">Al Aqah Beach | Fujairah</div>
+            <div class="card-details">5 Nights &bull; Deluxe Sea View Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 690</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- FUJAIRAH CARD 2 -->
+        <div class="card" data-name="le meridien al aqah beach resort fujairah" data-location="al aqah fujairah">
+          <div class="card-img-wrap">
+            <img src="destination/lemeridienfuj.jpg" alt="Le Meridien Al Aqah">
+            <span class="badge">Top Seller</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Le Méridien Al Aqah Beach Resort</div>
+            <div class="card-location">Al Aqah | Fujairah</div>
+            <div class="card-details">7 Nights &bull; Superior Sea View Room &bull; Half Board</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 610</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- FUJAIRAH CARD 3 -->
+        <div class="card" data-name="rotana resort spa fujairah" data-location="fujairah corniche">
+          <div class="card-img-wrap">
+            <img src="destination/rotanafuj.jpg" alt="Rotana Fujairah">
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Fujairah Rotana Resort &amp; Spa</div>
+            <div class="card-location">Corniche | Fujairah</div>
+            <div class="card-details">7 Nights &bull; Deluxe Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 570</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <p class="no-results" id="fujairahNoResults">No hotels match your search in Fujairah.</p>
+      </div>
+    </section>
+
+    <!-- AJMAN -->
+    <div class="emirate-label" id="ajman">
+      <h2>🏖️ Ajman</h2>
+    </div>
+    <section class="emirate-section">
+      <div class="cards-grid" id="ajmanGrid">
+
+        <!-- AJMAN CARD 1 -->
+        <div class="card" data-name="fairmont ajman" data-location="ajman corniche ajman">
+          <div class="card-img-wrap">
+            <img src="destination/fairmontajman.jpg" alt="Fairmont Ajman">
+            <span class="badge gold">Best Value</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Fairmont Ajman</div>
+            <div class="card-location">Ajman Corniche | Ajman</div>
+            <div class="card-details">7 Nights &bull; Deluxe Sea View Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 540</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- AJMAN CARD 2 -->
+        <div class="card" data-name="ajman saray a luxury collection resort" data-location="ajman beach ajman">
+          <div class="card-img-wrap">
+            <img src="destination/ajmansaray.jpg" alt="Ajman Saray">
+            <span class="badge">Top Rated</span>
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★★
+            </div>
+            <div class="card-title">Ajman Saray, A Luxury Collection</div>
+            <div class="card-location">Ajman Beach | Ajman</div>
+            <div class="card-details">5 Nights &bull; Superior King Room &bull; Half Board</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 495</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <!-- AJMAN CARD 3 -->
+        <div class="card" data-name="bahi ajman palace hotel" data-location="ajman corniche ajman">
+          <div class="card-img-wrap">
+            <img src="destination/bahiajman.jpg" alt="Bahi Ajman Palace">
+          </div>
+          <div class="card-body">
+            <div class="stars">
+              ★★★★☆
+            </div>
+            <div class="card-title">Bahi Ajman Palace Hotel</div>
+            <div class="card-location">Ajman Corniche | Ajman</div>
+            <div class="card-details">7 Nights &bull; Classic Room &bull; Breakfast</div>
+          </div>
+          <div class="card-price-row"><span class="price-label">per person from</span><span class="price">AED 420</span>
+          </div>
+          <a class="card-cta" href="contact.html">Book Now <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
+              stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <polyline points="9 18 15 12 9 6" />
+            </svg></a>
+        </div>
+
+        <p class="no-results" id="ajmanNoResults">No hotels match your search in Ajman.</p>
+      </div>
+    </section>
+
+  </main>
+
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="home/logo1.png" class="footer-logo" alt="Holidae Logo">
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram" class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
+          <a href="#" aria-label="Facebook" class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg>
+          </a>
+          <a href="#" aria-label="WhatsApp" class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="home.html">Home</a>
+          <a href="destinations.html">Destinations</a>
+          <a href="luxury.html">Luxury Stays</a>
+          <a href="thingstodo.html">Things To Do</a>
+        </div>
+        <div class="footer-col">
+          <h4>Book</h4>
+          <a href="contact.html">Reservations</a>
+          <a href="contact.html">Group Enquiries</a>
+          <a href="contact.html">Corporate Packages</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="tel:+97142883190">+971 4 288 3190</a>
+          <a href="mailto:bookings@holidae.ae">bookings@holidae.ae</a>
+          <span>Office 7, Al Fattan Currency House<br>DIFC, Dubai</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Holidae. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#" onclick="openModal('privacy'); return false;">Privacy Policy</a>
+        <a href="#" onclick="openModal('terms'); return false;">Terms of Service</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- js -->
+  <script>
+
+    const mainNav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      mainNav.classList.toggle('scrolled', window.scrollY > 30);
+    });
+
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+
+    navToggle.addEventListener('click', () => {
+      navMenu.classList.toggle('open');
+    });
+
+    navMenu.querySelectorAll('a').forEach(link => {
+      link.addEventListener('click', () => {
+        navMenu.classList.remove('open');
+      });
+    });
+
+    // search
+
+    const searchInput = document.getElementById('globalSearch');
+    const clearBtn = document.getElementById('clearSearch');
+
+
+    const emirateSections = [
+      { grid: 'dubaiGrid', noResults: 'dubaiNoResults' },
+      { grid: 'abudhabiGrid', noResults: 'aboudhabiNoResults' },
+      { grid: 'rakGrid', noResults: 'rakNoResults' },
+      { grid: 'fujairahGrid', noResults: 'fujairahNoResults' },
+      { grid: 'ajmanGrid', noResults: 'ajmanNoResults' },
+    ];
+
+
+    function filterAll() {
+      const query = searchInput.value.toLowerCase().trim();
+
+      emirateSections.forEach(({ grid, noResults }) => {
+        const gridEl = document.getElementById(grid);
+        const noResEl = document.getElementById(noResults);
+        const cards = gridEl.querySelectorAll('.card');
+        let visible = 0;
+
+        cards.forEach(card => {
+
+          const name = card.dataset.name || '';
+          const loc = card.dataset.location || '';
+          const title = card.querySelector('.card-title')?.textContent.toLowerCase() || '';
+          const matches = !query || name.includes(query) || loc.includes(query) || title.includes(query);
+          card.style.display = matches ? 'flex' : 'none';
+          if (matches) visible++;
+        });
+
+
+        noResEl.style.display = visible === 0 ? 'block' : 'none';
+      });
+    }
+
+
+    searchInput.addEventListener('input', filterAll);
+
+
+    clearBtn.addEventListener('click', () => {
+      searchInput.value = '';
+      filterAll();
+    });
+
+    // tab highlighting - update active tab on scroll
+    window.addEventListener('scroll', () => {
+      const sections = document.querySelectorAll('.emirate-section');
+      sections.forEach(section => {
+        const rect = section.getBoundingClientRect();
+        if (rect.top < 200 && rect.bottom > 200) {
+          const id = section.previousElementSibling.id;
+          document.querySelectorAll('.emirate-tab').forEach(t => t.classList.remove('active'));
+          const match = document.querySelector('.emirate-tab[href="#' + id + '"]');
+          if (match) match.classList.add('active');
+        }
+      });
+    });
+  </script>
+
+  <!-- Privacy Policy Modal -->
+  <div class="modal-backdrop" id="modalPrivacy">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('privacy')" aria-label="Close">✕</button>
+      <h2>Privacy Policy</h2>
+      <span class="modal-date">Last updated: January 2026</span>
+
+      <p>Holidae is committed to protecting your personal information. This policy explains what we collect, why we
+        collect it, and how we use it.</p>
+
+      <hr class="modal-divider">
+
+      <h3>What We Collect</h3>
+      <p>When you submit a booking enquiry through our website, we collect:</p>
+      <ul>
+        <li>Your name, email address, and phone number</li>
+        <li>Travel dates, destination preferences, and guest numbers</li>
+        <li>Any special requests you provide in the message field</li>
+      </ul>
+
+      <h3>How We Use It</h3>
+      <p>We use your information solely to process and confirm your holiday booking. We may contact you by email or
+        phone to follow up on your enquiry. We do not sell, share, or pass your data to third parties for marketing
+        purposes.</p>
+
+      <h3>Cookies</h3>
+      <p>Our website uses only essential cookies required for the site to function correctly. We do not use tracking or
+        advertising cookies.</p>
+
+      <h3>Data Retention</h3>
+      <p>Booking enquiry data is retained for up to 12 months after your travel date, after which it is securely
+        deleted. You may request deletion of your data at any time by contacting us at bookings@holidae.ae.</p>
+
+      <h3>Your Rights</h3>
+      <p>You have the right to access, correct, or delete any personal data we hold about you. To make a request, email
+        us at bookings@holidae.ae and we will respond within 5 working days.</p>
+
+      <h3>Contact</h3>
+      <p>For any privacy-related questions, contact our team at bookings@holidae.ae or call +971 4 288 3190.</p>
+    </div>
+  </div>
+
+  <!-- Terms of Service Modal -->
+  <div class="modal-backdrop" id="modalTerms">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('terms')" aria-label="Close">✕</button>
+      <h2>Terms of Service</h2>
+      <span class="modal-date">Last updated: January 2026</span>
+
+      <p>By using the Holidae website and submitting a booking enquiry, you agree to the following terms and conditions.
+      </p>
+
+      <hr class="modal-divider">
+
+      <h3>Bookings & Confirmation</h3>
+      <p>Submitting a booking form does not guarantee a confirmed reservation. All bookings are subject to availability
+        and will be confirmed by our team within 24 hours via email or phone.</p>
+
+      <h3>Pricing</h3>
+      <p>All prices displayed are indicative and quoted in UAE Dirhams (AED). Final pricing will be confirmed at the
+        time of booking. Holidae reserves the right to adjust prices due to availability, seasonal changes, or supplier
+        pricing updates.</p>
+
+      <h3>Cancellations & Amendments</h3>
+      <ul>
+        <li>Free amendments or cancellations are permitted up to 48 hours before your check-in date.</li>
+        <li>Cancellations made within 48 hours of check-in may be subject to a cancellation fee of up to one night's
+          stay.</li>
+        <li>No-shows will be charged the full booking amount.</li>
+      </ul>
+
+      <h3>Liability</h3>
+      <p>Holidae acts as an agent between customers and hotel/experience providers. We are not liable for any changes,
+        disruptions, or cancellations made directly by third-party providers. We will always work to find suitable
+        alternatives where possible.</p>
+
+      <h3>Website Use</h3>
+      <p>All content on this website is for informational purposes. Images are representative and may not reflect the
+        exact room or view you receive. We make every effort to ensure accuracy but cannot guarantee that all content is
+        up to date at all times.</p>
+
+      <h3>Governing Law</h3>
+      <p>These terms are governed by the laws of the United Arab Emirates. Any disputes will be subject to the
+        jurisdiction of the courts of Dubai, UAE.</p>
+    </div>
+  </div>
+
+  <script>
+    function openModal(type) {
+      document.getElementById(type === 'privacy' ? 'modalPrivacy' : 'modalTerms').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(type) {
+      document.getElementById(type === 'privacy' ? 'modalPrivacy' : 'modalTerms').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    // close on backdrop click
+    document.querySelectorAll('.modal-backdrop').forEach(el => {
+      el.addEventListener('click', function (e) {
+        if (e.target === this) {
+          this.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+    // close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop.open').forEach(el => {
+          el.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>

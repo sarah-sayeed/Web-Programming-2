@@ -1,0 +1,1399 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Confirm Booking – Holidae</title>
+  <link
+    href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=DM+Sans:wght@400;500;600&display=swap"
+    rel="stylesheet">
+  <style>
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: #4a0a1a;
+      color: #faecc2;
+      overflow-x: hidden;
+    }
+
+    /* navbar */
+    nav {
+      display: flex;
+      align-items: center;
+      padding: 0 40px;
+      justify-content: space-between;
+      background: rgba(74, 10, 26, 0.75);
+      backdrop-filter: blur(0px);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      height: 70px;
+      border-bottom: 1px solid transparent;
+      transition: backdrop-filter 0.4s ease, background 0.4s ease, border-color 0.4s ease;
+    }
+
+    nav.scrolled {
+      background: rgba(74, 10, 26, 0.85);
+      backdrop-filter: blur(18px);
+      border-color: rgba(245, 215, 142, 0.15);
+    }
+
+    .nav-logo {
+      width: 290px;
+    }
+
+    .nav-toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+
+    .nav-toggle span {
+      display: block;
+      width: 26px;
+      height: 2px;
+      background: #faecc2;
+      border-radius: 2px;
+    }
+
+    nav ul {
+      display: flex;
+      list-style: none;
+      gap: 32px;
+    }
+
+    nav a {
+      text-decoration: none;
+      color: #faecc2;
+      font-size: 15px;
+      letter-spacing: 0.04em;
+      transition: color 0.3s;
+    }
+
+    nav a:hover,
+    nav a.active {
+      color: #f5d78e;
+    }
+
+    /* top banner */
+    .hero-banner {
+      position: relative;
+      background: linear-gradient(135deg, #1a0508 0%, #4a0a1a 50%, #6b1028 100%);
+      padding: 80px 40px 70px;
+      text-align: center;
+      overflow: hidden;
+    }
+
+    .hero-banner::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle at 20% 50%, rgba(245, 215, 142, 0.1) 0%, transparent 50%),
+        radial-gradient(circle at 80% 20%, rgba(245, 215, 142, 0.06) 0%, transparent 40%);
+      pointer-events: none;
+    }
+
+    .hero-banner::after {
+      content: '';
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      height: 60px;
+      background: transparent;
+    }
+
+    .hero-eyebrow {
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      font-weight: 600;
+      margin-bottom: 16px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-banner h1 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.4rem, 5vw, 4rem);
+      color: whitesmoke;
+      font-weight: 700;
+      line-height: 1.1;
+      position: relative;
+      z-index: 1;
+    }
+
+    .hero-banner h1 em {
+      font-style: italic;
+      color: #f5d78e;
+    }
+
+    .hero-banner p {
+      color: rgba(245, 231, 198, 0.92);
+      margin-top: 14px;
+      font-size: 1rem;
+      max-width: 500px;
+      margin-inline: auto;
+      line-height: 1.7;
+      position: relative;
+      z-index: 1;
+    }
+
+
+    .contact-section {
+      max-width: 1200px;
+      margin: 60px auto;
+      padding: 0 48px;
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 44px;
+      align-items: start;
+    }
+
+    /* left side - the form */
+    .form-panel {
+      background: whitesmoke;
+      border: 1px solid #4a1020;
+      border-radius: 18px;
+      padding: 40px 42px;
+    }
+
+    .panel-eyebrow {
+      font-size: 0.68rem;
+      text-transform: uppercase;
+      color: #8b1a38;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
+
+    .panel-eyebrow em {
+      font-style: italic;
+      color: #f5d78e;
+    }
+
+    .form-panel h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.85rem;
+      font-weight: 700;
+      color: #4a0a1a;
+      margin-bottom: 6px;
+    }
+
+    .form-panel>p {
+      font-size: 0.88rem;
+      color: #8b1a38;
+      margin-bottom: 32px;
+      line-height: 1.7;
+    }
+
+    /* in-form section dividers */
+    .form-section-label {
+      font-size: 0.67rem;
+      letter-spacing: 0.25em;
+      text-transform: uppercase;
+      color: #8b1a38;
+      opacity: 0.5;
+      font-weight: 700;
+      margin: 26px 0 14px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .form-section-label::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: #4a1020;
+    }
+
+    /* form fields */
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #6b1028;
+      margin-bottom: 7px;
+      letter-spacing: 0.03em;
+    }
+
+    .form-group input,
+    .form-group select,
+    .form-group textarea {
+      width: 100%;
+      padding: 12px 15px;
+      border: 1.5px solid #4a1020;
+      border-radius: 10px;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.93rem;
+      color: #6b1028;
+      background: rgba(74, 10, 26, 0.35);
+      outline: none;
+      transition: border-color 0.25s, background 0.25s;
+      appearance: none;
+      -webkit-appearance: none;
+    }
+
+    .form-group input::placeholder,
+    .form-group textarea::placeholder {
+      color: #6b1028;
+    }
+
+    .form-group input:focus,
+    .form-group select:focus,
+    .form-group textarea:focus {
+      border-color: rgba(245, 215, 142, 0.5);
+      background: rgba(74, 10, 26, 0.55);
+    }
+
+    .form-group select {
+      cursor: pointer;
+    }
+
+    .form-group select option {
+      background: #1a0508;
+      color: #faecc2;
+    }
+
+    .form-group textarea {
+      height: 115px;
+      resize: vertical;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .phone-row {
+      display: grid;
+      grid-template-columns: 108px 1fr;
+      gap: 10px;
+    }
+
+    /* checkbox pill buttons */
+    .checkbox-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 4px;
+    }
+
+    .check-pill {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      background: rgba(74, 10, 26, 0.4);
+      border: 1.5px solid #4a1020;
+      border-radius: 30px;
+      padding: 6px 14px;
+      cursor: pointer;
+      font-size: 0.8rem;
+      color: rgba(245, 215, 142, 0.75);
+      font-weight: 500;
+      transition: border-color 0.2s, color 0.2s, background 0.2s;
+      user-select: none;
+    }
+
+    .check-pill input[type="checkbox"] {
+      display: none;
+    }
+
+    .check-pill:has(input:checked) {
+      border-color: #f5d78e;
+      color: #f5d78e;
+      background: rgba(245, 215, 142, 0.1);
+    }
+
+    .pill-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #4a1020;
+      flex-shrink: 0;
+      transition: background 0.2s;
+    }
+
+    .check-pill:has(input:checked) .pill-dot {
+      background: #f5d78e;
+    }
+
+    /* submit button */
+    .submit-btn {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 8px;
+      background: #6b1028;
+      color: #f5d78e;
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.97rem;
+      font-weight: 700;
+      padding: 16px 24px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      width: 100%;
+      margin-top: 8px;
+      letter-spacing: 0.04em;
+      transition: background 0.2s, transform 0.2s;
+    }
+
+    .submit-btn:hover {
+      background: #8b1a38;
+      transform: translateY(-2px);
+    }
+
+    .submit-btn:active {
+      transform: translateY(0);
+    }
+
+    .submit-btn svg {
+      transition: transform 0.2s;
+    }
+
+    .submit-btn:hover svg {
+      transform: translateX(4px);
+    }
+
+
+    .form-success {
+      display: none;
+      background: rgba(74, 10, 26, 0.5);
+      border: 1.5px solid rgba(245, 215, 142, 0.3);
+      border-radius: 14px;
+      padding: 32px 24px;
+      text-align: center;
+      margin-top: 20px;
+    }
+
+    .form-success .success-mark {
+      font-size: 2rem;
+      color: #4a0a1a;
+      margin-bottom: 14px;
+    }
+
+    .form-success h3 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.3rem;
+      color: #4a0a1a;
+      margin-bottom: 8px;
+    }
+
+    .form-success p {
+      font-size: 0.88rem;
+      color: #6b1028;
+      line-height: 1.65;
+    }
+
+    /* right side info */
+    .info-panel {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .info-panel-header {
+      margin-bottom: 4px;
+    }
+
+    .info-panel-header h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.75rem;
+      font-weight: 700;
+      color: #faecc2;
+      margin-bottom: 6px;
+    }
+
+    .info-panel-header p {
+      font-size: 0.88rem;
+      color: rgba(245, 215, 142, 0.75);
+      line-height: 1.65;
+    }
+
+
+    .info-card {
+      background: whitesmoke;
+      border: 1px solid #4a1020;
+      border-radius: 14px;
+      padding: 16px 20px;
+      display: flex;
+      align-items: center;
+      gap: 16px;
+      transition: border-color 0.25s, transform 0.25s;
+    }
+
+    .info-card:hover {
+      border-color: rgba(245, 215, 142, 0.3);
+      transform: translateX(4px);
+    }
+
+    .info-icon {
+      width: 44px;
+      height: 44px;
+      border-radius: 12px;
+      background: rgba(74, 10, 26, 0.7);
+      border: 1px solid #4a1020;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.15rem;
+      flex-shrink: 0;
+    }
+
+    .info-text h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #6b1028;
+      letter-spacing: 0.05em;
+      text-transform: uppercase;
+      margin-bottom: 3px;
+    }
+
+    .info-text p {
+      font-size: 0.83rem;
+      color: #8b1a38;
+      line-height: 1.55;
+    }
+
+    .info-text a {
+      color: #4a0a1a;
+      text-decoration: none;
+      font-weight: 600;
+      transition: opacity 0.2s;
+    }
+
+    .info-text a:hover {
+      opacity: 0.75;
+    }
+
+
+    .why-box {
+      background: whitesmoke;
+      border: 1px solid #6b1028;
+      border-left: 4px solid #8b1a38;
+      border-radius: 14px;
+      padding: 22px 22px 18px;
+    }
+
+    .why-box h4 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1rem;
+      font-weight: 700;
+      color: #8b1a38;
+      margin-bottom: 16px;
+    }
+
+    .why-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.84rem;
+      color: #6b1028;
+      line-height: 1.55;
+      padding: 9px 0;
+      border-bottom: 1px solid #4a1020;
+    }
+
+    .why-item:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .why-mark {
+      color: #4a0a1a;
+      font-size: 0.8rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+
+    /* opening hours */
+    .hours-box {
+      background: whitesmoke;
+      border: 1px solid #6b1028;
+      border-radius: 14px;
+      padding: 20px 22px;
+    }
+
+    .hours-box h4 {
+      font-size: 0.78rem;
+      font-weight: 700;
+      color: #8b1a38;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      margin-bottom: 14px;
+      opacity: 0.85;
+    }
+
+    .hours-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.84rem;
+      color: #6b1028;
+      padding: 9px 0;
+      border-bottom: 1px solid #4a1020;
+    }
+
+    .hours-row:last-child {
+      border-bottom: none;
+      padding-bottom: 0;
+    }
+
+    .hours-day {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .day-dot {
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #4a0a1a94;
+      flex-shrink: 0;
+    }
+
+    .day-dot.open {
+      background: #4a0a1a;
+    }
+
+    .hours-time {
+      font-weight: 600;
+      color: #4a0a1a;
+      font-size: 0.84rem;
+    }
+
+    .hours-time.closed {
+      color: #4a0a1a94;
+      font-weight: 400;
+    }
+
+    /* footer */
+    footer {
+      background: #0d0205;
+      color: rgba(245, 215, 142, 0.75);
+      border-top: 1px solid #4a1020;
+      padding: 0;
+    }
+
+    .footer-inner {
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 56px 48px 40px;
+      display: grid;
+      grid-template-columns: 1fr 2fr;
+      gap: 60px;
+      align-items: start;
+    }
+
+    .footer-logo {
+      width: 300px;
+      margin-bottom: 5px;
+      opacity: 0.9;
+    }
+
+    .footer-socials {
+      padding-left: 100px;
+      display: flex;
+      gap: 10px;
+    }
+
+    .social-btn {
+      width: 36px;
+      height: 36px;
+      border-radius: 8px;
+      background: rgba(245, 215, 142, 0.07);
+      border: 1px solid #4a1020;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #f5d78e;
+      text-decoration: none;
+      transition: background 0.25s, border-color 0.25s, transform 0.2s;
+    }
+
+    .social-btn:hover {
+      background: rgba(245, 215, 142, 0.15);
+      border-color: rgba(245, 215, 142, 0.35);
+      transform: translateY(-2px);
+    }
+
+    .footer-links {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 32px;
+    }
+
+    .footer-col h4 {
+      font-size: 0.68rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: #f5d78e;
+      font-weight: 700;
+      margin-bottom: 18px;
+    }
+
+    .footer-col a,
+    .footer-col span {
+      display: block;
+      font-size: 0.84rem;
+      color: rgba(245, 215, 142, 0.75);
+      text-decoration: none;
+      margin-bottom: 10px;
+      line-height: 1.5;
+      transition: color 0.2s;
+    }
+
+    .footer-col a:hover {
+      color: #f5d78e;
+    }
+
+    .footer-bottom {
+      border-top: 1px solid #4a1020;
+      max-width: 1280px;
+      margin: 0 auto;
+      padding: 20px 48px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 0.78rem;
+      color: rgba(245, 215, 142, 0.4);
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+
+    .footer-bottom-links {
+      display: flex;
+      gap: 24px;
+    }
+
+    .footer-bottom-links a {
+      color: rgba(245, 215, 142, 0.4);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+
+    .footer-bottom-links a:hover {
+      color: #f5d78e;
+    }
+
+    @media (max-width: 860px) {
+      .footer-inner {
+        grid-template-columns: 1fr;
+        gap: 36px;
+        padding: 40px 24px 28px;
+      }
+
+      .footer-links {
+        grid-template-columns: repeat(2, 1fr);
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+        padding: 18px 24px;
+        gap: 10px;
+      }
+    }
+
+    @media (max-width: 500px) {
+      .footer-links {
+        grid-template-columns: 1fr;
+      }
+    }
+
+
+    /* mobile styles */
+    @media (max-width: 960px) {
+      .contact-section {
+        grid-template-columns: 1fr;
+        gap: 32px;
+      }
+    }
+
+    @media (max-width: 700px) {
+      nav {
+        padding: 0 20px;
+      }
+
+      .nav-logo {
+        width: 180px;
+      }
+
+      .nav-toggle {
+        display: flex;
+      }
+
+      nav ul {
+        display: none;
+        flex-direction: column;
+        position: absolute;
+        top: 70px;
+        left: 0;
+        right: 0;
+        background: rgba(74, 10, 26, 0.97);
+        backdrop-filter: blur(16px);
+        padding: 20px 24px;
+        gap: 18px;
+      }
+
+      nav ul.open {
+        display: flex;
+      }
+
+      .hero-banner {
+        padding: 60px 22px 52px;
+      }
+
+      .contact-section {
+        padding: 0 20px;
+        margin: 44px auto;
+      }
+
+      .form-panel {
+        padding: 28px 22px;
+      }
+
+      .form-row {
+        grid-template-columns: 1fr;
+      }
+
+      .phone-row {
+        grid-template-columns: 92px 1fr;
+      }
+    }
+
+    /* privacy/terms footer */
+    .modal-backdrop {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 2, 5, 0.82);
+      z-index: 2000;
+      align-items: center;
+      justify-content: center;
+      padding: 20px;
+    }
+
+    .modal-backdrop.open {
+      display: flex;
+    }
+
+    .modal-box {
+      background: #1a0508;
+      border: 1px solid #4a1020;
+      border-radius: 16px;
+      max-width: 680px;
+      width: 100%;
+      max-height: 80vh;
+      overflow-y: auto;
+      padding: 40px 44px;
+      position: relative;
+      animation: modalIn 0.25s ease;
+    }
+
+    @keyframes modalIn {
+      from {
+        opacity: 0;
+        transform: translateY(16px);
+      }
+
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
+
+    .modal-close {
+      position: absolute;
+      top: 16px;
+      right: 20px;
+      background: none;
+      border: none;
+      color: rgba(245, 215, 142, 0.75);
+      font-size: 1.4rem;
+      cursor: pointer;
+      line-height: 1;
+      transition: color 0.2s;
+    }
+
+    .modal-close:hover {
+      color: #f5d78e;
+    }
+
+    .modal-box h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.6rem;
+      color: #faecc2;
+      margin-bottom: 6px;
+    }
+
+    .modal-box .modal-date {
+      font-size: 0.75rem;
+      color: rgba(245, 215, 142, 0.75);
+      opacity: 0.55;
+      margin-bottom: 28px;
+      display: block;
+    }
+
+    .modal-box h3 {
+      font-size: 0.8rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: #f5d78e;
+      margin: 22px 0 8px;
+    }
+
+    .modal-box p,
+    .modal-box li {
+      font-size: 0.88rem;
+      color: rgba(245, 215, 142, 0.75);
+      line-height: 1.75;
+    }
+
+    .modal-box ul {
+      padding-left: 18px;
+      margin-top: 6px;
+    }
+
+    .modal-box ul li {
+      margin-bottom: 6px;
+    }
+
+    .modal-divider {
+      border: none;
+      border-top: 1px solid #4a1020;
+      margin: 20px 0;
+    }
+
+    @media (max-width: 600px) {
+      .modal-box {
+        padding: 28px 22px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+
+  <!-- navigation -->
+  <nav id="mainNav">
+    <img src="home/logo1.png" class="nav-logo" alt="Holidae Logo">
+    <button class="nav-toggle" id="navToggle" aria-label="Toggle menu">
+      <span></span><span></span><span></span>
+    </button>
+    <ul id="navMenu">
+      <li><a href="home.html">HOME</a></li>
+      <li><a href="destinations.html">DESTINATIONS</a></li>
+      <li><a href="luxury.html">LUXURY STAYS</a></li>
+      <li><a href="thingstodo.html">THINGS TO DO</a></li>
+      <li><a href="contact.html" class="active">RESERVATIONS</a></li>
+    </ul>
+  </nav>
+
+  <main>
+
+  <!-- banner at top -->
+  <section class="hero-banner">
+    <div class="hero-eyebrow">✦ Travel Concierge ✦</div>
+    <h1>Confirm Your <em>Booking</em></h1>
+    <p>Ready to make it official? Fill in your details and our concierge team will confirm your reservation within 24
+      hours.</p>
+  </section>
+
+  <!-- main content -->
+  <section class="contact-section">
+
+    <!-- form -->
+    <div class="form-panel">
+      <div class="panel-eyebrow">Reservation Details</div>
+      <h2>Complete Your Booking</h2>
+      <p>Fill in your essentials below and we'll handle everything else — no hidden fees, no surprises.</p>
+
+      <form id="bookingForm">
+
+        <div class="form-section-label">Personal Details</div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="e.g. Marry" required>
+          </div>
+          <div class="form-group">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="e.g. Sans" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" required>
+        </div>
+
+        <div class="form-group">
+          <label for="phone">Phone / WhatsApp</label>
+          <div class="phone-row">
+            <select id="countryCode">
+              <option value="+971">🇦🇪 +971</option>
+              <option value="+44">🇬🇧 +44</option>
+              <option value="+1">🇺🇸 +1</option>
+              <option value="+91">🇮🇳 +91</option>
+              <option value="+33">🇫🇷 +33</option>
+              <option value="+49">🇩🇪 +49</option>
+              <option value="+61">🇦🇺 +61</option>
+            </select>
+            <input type="tel" id="phone" placeholder="50 000 0000" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="nationality">Nationality</label>
+          <select id="nationality">
+            <option value="">Select nationality</option>
+            <option>Emirati</option>
+            <option>British</option>
+            <option>American</option>
+            <option>Indian</option>
+            <option>French</option>
+            <option>German</option>
+            <option>Australian</option>
+            <option>Other</option>
+          </select>
+        </div>
+
+        <div class="form-section-label">Booking Details</div>
+
+        <div class="form-group">
+          <label for="destination">Destination</label>
+          <select id="destination" required>
+            <option value="">Select a destination</option>
+            <option>Dubai</option>
+            <option>Abu Dhabi</option>
+            <option>Ras Al Khaimah</option>
+            <option>Fujairah</option>
+            <option>Ajman</option>
+            <option>Not decided yet</option>
+          </select>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="checkIn">Check-In Date</label>
+            <input type="date" id="checkIn" required>
+          </div>
+          <div class="form-group">
+            <label for="checkOut">Check-Out Date</label>
+            <input type="date" id="checkOut" required>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="adults">Adults</label>
+            <select id="adults">
+              <option>1</option>
+              <option selected>2</option>
+              <option>3</option>
+              <option>4</option>
+              <option>5+</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="children">Children</label>
+            <select id="children">
+              <option selected>0</option>
+              <option>1</option>
+              <option>2</option>
+              <option>3</option>
+              <option>4+</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-row">
+          <div class="form-group">
+            <label for="roomType">Room Preference</label>
+            <select id="roomType">
+              <option value="">Any room type</option>
+              <option>Deluxe Room</option>
+              <option>Superior Room</option>
+              <option>Junior Suite</option>
+              <option>Executive Suite</option>
+              <option>Presidential Suite</option>
+              <option>Private Villa</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="budget">Budget (AED)</label>
+            <select id="budget">
+              <option value="">Select range</option>
+              <option>Under AED 5,000</option>
+              <option>AED 5,000 – 10,000</option>
+              <option>AED 10,000 – 20,000</option>
+              <option>AED 20,000+</option>
+              <option>Flexible</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="form-section-label">Experiences</div>
+
+        <div class="form-group">
+          <label>What would you like included?</label>
+          <div class="checkbox-group">
+            <label class="check-pill"><input type="checkbox"> <span class="pill-dot"></span> 🏨 Luxury Stays</label>
+            <label class="check-pill"><input type="checkbox"> <span class="pill-dot"></span> 🎢 Theme Parks</label>
+            <label class="check-pill"><input type="checkbox"> <span class="pill-dot"></span> 🏖 Beach & Water</label>
+            <label class="check-pill"><input type="checkbox"> <span class="pill-dot"></span> 🌅 Desert Safari</label>
+            <label class="check-pill"><input type="checkbox"> <span class="pill-dot"></span> 🏛 Culture & Art</label>
+            <label class="check-pill"><input type="checkbox"> <span class="pill-dot"></span> 👨‍👩‍👧 Family Fun</label>
+            <label class="check-pill"><input type="checkbox"> <span class="pill-dot"></span> 🍽 Fine Dining</label>
+            <label class="check-pill"><input type="checkbox"> <span class="pill-dot"></span> 🛥 Yacht & Cruise</label>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="message">Special Requests or Notes</label>
+          <textarea id="message"
+            placeholder="Dietary needs, accessibility, celebrations, special preferences…"></textarea>
+        </div>
+
+        <button type="submit" class="submit-btn">
+          Confirm Booking
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"
+            stroke-linecap="round" stroke-linejoin="round">
+            <polyline points="9 18 15 12 9 6" />
+          </svg>
+        </button>
+
+      </form>
+
+      <div class="form-success" id="formSuccess">
+        <div class="success-mark">✦</div>
+        <h3>Booking Received</h3>
+        <p>Your reservation details have been submitted. Our concierge will confirm everything within 24 hours.<br><br>
+          <span style="opacity:0.65;font-size:0.84rem;">A confirmation summary has been sent to your email.</span>
+        </p>
+      </div>
+    </div>
+
+    <!-- contact info on the right -->
+    <div class="info-panel">
+
+      <div class="info-panel-header">
+        <div class="panel-eyebrow"><em>Reach Us Directly</em></div>
+        <h2>Contact Our Team</h2>
+        <p>Prefer to speak with someone? Our concierge is available across all channels below.</p>
+      </div>
+
+      <!-- CONTACT CARDS -->
+      <div class="info-card">
+        <div class="info-icon">📞</div>
+        <div class="info-text">
+          <h4>Phone</h4>
+          <p><a href="tel:+97142883190">+971 4 288 3190</a></p>
+          <p>Available 7 days a week</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">✉️</div>
+        <div class="info-text">
+          <h4>Email</h4>
+          <p><a href="mailto:bookings@holidae.ae">bookings@holidae.ae</a></p>
+          <p>Response within 24 hours</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">💬</div>
+        <div class="info-text">
+          <h4>WhatsApp</h4>
+          <p><a href="https://wa.me/97142883190">+971 4 288 3190</a></p>
+          <p>Instant chat with our team</p>
+        </div>
+      </div>
+
+      <div class="info-card">
+        <div class="info-icon">📍</div>
+        <div class="info-text">
+          <h4>Office</h4>
+          <p>Office 7, Al Fattan Currency House<br>DIFC, Dubai</p>
+        </div>
+      </div>
+
+      <!-- WHY BOOK WITH US — sits above Opening Hours -->
+      <div class="why-box">
+        <h4>Why Book With Us</h4>
+        <div class="why-item">
+          <span class="why-mark">✦</span>
+          <span>No hidden fees — price confirmed before you pay</span>
+        </div>
+        <div class="why-item">
+          <span class="why-mark">✦</span>
+          <span>Dedicated concierge from booking to check-out</span>
+        </div>
+        <div class="why-item">
+          <span class="why-mark">✦</span>
+          <span>Free amendments up to 48 hours before arrival</span>
+        </div>
+        <div class="why-item">
+          <span class="why-mark">✦</span>
+          <span>Curated luxury properties, personally vetted</span>
+        </div>
+      </div>
+
+      <!-- OPENING HOURS -->
+      <div class="hours-box">
+        <h4>Opening Hours</h4>
+        <div class="hours-row">
+          <div class="hours-day"><span class="day-dot open"></span>Monday – Friday</div>
+          <span class="hours-time">9:00 AM – 6:00 PM</span>
+        </div>
+        <div class="hours-row">
+          <div class="hours-day"><span class="day-dot open"></span>Saturday</div>
+          <span class="hours-time">10:00 AM – 4:00 PM</span>
+        </div>
+        <div class="hours-row">
+          <div class="hours-day"><span class="day-dot"></span>Sunday</div>
+          <span class="hours-time closed">Closed</span>
+        </div>
+      </div>
+
+    </div>
+
+  </secction>
+
+  </main>
+
+
+  <footer>
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <img src="home/logo1.png" class="footer-logo" alt="Holidae Logo">
+        <div class="footer-socials">
+          <a href="#" aria-label="Instagram" class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <rect x="2" y="2" width="20" height="20" rx="5" />
+              <path d="M16 11.37A4 4 0 1 1 12.63 8 4 4 0 0 1 16 11.37z" />
+              <line x1="17.5" y1="6.5" x2="17.51" y2="6.5" />
+            </svg>
+          </a>
+          <a href="#" aria-label="Facebook" class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path d="M18 2h-3a5 5 0 0 0-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 0 1 1-1h3z" />
+            </svg>
+          </a>
+          <a href="#" aria-label="WhatsApp" class="social-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"
+              stroke-linecap="round" stroke-linejoin="round">
+              <path
+                d="M21 11.5a8.38 8.38 0 0 1-.9 3.8 8.5 8.5 0 0 1-7.6 4.7 8.38 8.38 0 0 1-3.8-.9L3 21l1.9-5.7a8.38 8.38 0 0 1-.9-3.8 8.5 8.5 0 0 1 4.7-7.6 8.38 8.38 0 0 1 3.8-.9h.5a8.48 8.48 0 0 1 8 8v.5z" />
+            </svg>
+          </a>
+        </div>
+      </div>
+      <div class="footer-links">
+        <div class="footer-col">
+          <h4>Explore</h4>
+          <a href="home.html">Home</a>
+          <a href="destinations.html">Destinations</a>
+          <a href="luxury.html">Luxury Stays</a>
+          <a href="thingstodo.html">Things To Do</a>
+        </div>
+        <div class="footer-col">
+          <h4>Book</h4>
+          <a href="contact.html">Reservations</a>
+          <a href="contact.html">Group Enquiries</a>
+          <a href="contact.html">Corporate Packages</a>
+        </div>
+        <div class="footer-col">
+          <h4>Contact</h4>
+          <a href="tel:+97142883190">+971 4 288 3190</a>
+          <a href="mailto:bookings@holidae.ae">bookings@holidae.ae</a>
+          <span>Office 7, Al Fattan Currency House<br>DIFC, Dubai</span>
+        </div>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <span>© 2026 Holidae. All rights reserved.</span>
+      <div class="footer-bottom-links">
+        <a href="#" onclick="openModal('privacy'); return false;">Privacy Policy</a>
+        <a href="#" onclick="openModal('terms'); return false;">Terms of Service</a>
+        <a href="contact.html">Contact Us</a>
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    /* Nav scroll blur */
+    const mainNav = document.getElementById('mainNav');
+    window.addEventListener('scroll', () => {
+      mainNav.classList.toggle('scrolled', window.scrollY > 30);
+    });
+
+    /* Mobile nav */
+    const navToggle = document.getElementById('navToggle');
+    const navMenu = document.getElementById('navMenu');
+    navToggle.addEventListener('click', () => navMenu.classList.toggle('open'));
+    navMenu.querySelectorAll('a').forEach(l => l.addEventListener('click', () => navMenu.classList.remove('open')));
+
+    /* Date validation — prevent check-out before check-in */
+    const today = new Date().toISOString().split('T')[0];
+    const checkIn = document.getElementById('checkIn');
+    const checkOut = document.getElementById('checkOut');
+    checkIn.min = today;
+    checkOut.min = today;
+    checkIn.addEventListener('change', () => {
+      checkOut.min = checkIn.value;
+      if (checkOut.value && checkOut.value < checkIn.value) checkOut.value = '';
+    });
+
+    /* Form submit → success state */
+    document.getElementById('bookingForm').addEventListener('submit', function (e) {
+      e.preventDefault();
+      this.style.display = 'none';
+      const success = document.getElementById('formSuccess');
+      success.style.display = 'block';
+      success.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    });
+  </script>
+
+  <!-- Privacy Policy Modal -->
+  <div class="modal-backdrop" id="modalPrivacy">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('privacy')" aria-label="Close">✕</button>
+      <h2>Privacy Policy</h2>
+      <span class="modal-date">Last updated: January 2026</span>
+
+      <p>Holidae is committed to protecting your personal information. This policy explains what we collect, why we
+        collect it, and how we use it.</p>
+
+      <hr class="modal-divider">
+
+      <h3>What We Collect</h3>
+      <p>When you submit a booking enquiry through our website, we collect:</p>
+      <ul>
+        <li>Your name, email address, and phone number</li>
+        <li>Travel dates, destination preferences, and guest numbers</li>
+        <li>Any special requests you provide in the message field</li>
+      </ul>
+
+      <h3>How We Use It</h3>
+      <p>We use your information solely to process and confirm your holiday booking. We may contact you by email or
+        phone to follow up on your enquiry. We do not sell, share, or pass your data to third parties for marketing
+        purposes.</p>
+
+      <h3>Cookies</h3>
+      <p>Our website uses only essential cookies required for the site to function correctly. We do not use tracking or
+        advertising cookies.</p>
+
+      <h3>Data Retention</h3>
+      <p>Booking enquiry data is retained for up to 12 months after your travel date, after which it is securely
+        deleted. You may request deletion of your data at any time by contacting us at bookings@holidae.ae.</p>
+
+      <h3>Your Rights</h3>
+      <p>You have the right to access, correct, or delete any personal data we hold about you. To make a request, email
+        us at bookings@holidae.ae and we will respond within 5 working days.</p>
+
+      <h3>Contact</h3>
+      <p>For any privacy-related questions, contact our team at bookings@holidae.ae or call +971 4 288 3190.</p>
+    </div>
+  </div>
+
+  <!-- Terms of Service Modal -->
+  <div class="modal-backdrop" id="modalTerms">
+    <div class="modal-box">
+      <button class="modal-close" onclick="closeModal('terms')" aria-label="Close">✕</button>
+      <h2>Terms of Service</h2>
+      <span class="modal-date">Last updated: January 2026</span>
+
+      <p>By using the Holidae website and submitting a booking enquiry, you agree to the following terms and conditions.
+      </p>
+
+      <hr class="modal-divider">
+
+      <h3>Bookings & Confirmation</h3>
+      <p>Submitting a booking form does not guarantee a confirmed reservation. All bookings are subject to availability
+        and will be confirmed by our team within 24 hours via email or phone.</p>
+
+      <h3>Pricing</h3>
+      <p>All prices displayed are indicative and quoted in UAE Dirhams (AED). Final pricing will be confirmed at the
+        time of booking. Holidae reserves the right to adjust prices due to availability, seasonal changes, or supplier
+        pricing updates.</p>
+
+      <h3>Cancellations & Amendments</h3>
+      <ul>
+        <li>Free amendments or cancellations are permitted up to 48 hours before your check-in date.</li>
+        <li>Cancellations made within 48 hours of check-in may be subject to a cancellation fee of up to one night's
+          stay.</li>
+        <li>No-shows will be charged the full booking amount.</li>
+      </ul>
+
+      <h3>Liability</h3>
+      <p>Holidae acts as an agent between customers and hotel/experience providers. We are not liable for any changes,
+        disruptions, or cancellations made directly by third-party providers. We will always work to find suitable
+        alternatives where possible.</p>
+
+      <h3>Website Use</h3>
+      <p>All content on this website is for informational purposes. Images are representative and may not reflect the
+        exact room or view you receive. We make every effort to ensure accuracy but cannot guarantee that all content is
+        up to date at all times.</p>
+
+      <h3>Governing Law</h3>
+      <p>These terms are governed by the laws of the United Arab Emirates. Any disputes will be subject to the
+        jurisdiction of the courts of Dubai, UAE.</p>
+    </div>
+  </div>
+
+  <script>
+    function openModal(type) {
+      document.getElementById(type === 'privacy' ? 'modalPrivacy' : 'modalTerms').classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeModal(type) {
+      document.getElementById(type === 'privacy' ? 'modalPrivacy' : 'modalTerms').classList.remove('open');
+      document.body.style.overflow = '';
+    }
+    // close on backdrop click
+    document.querySelectorAll('.modal-backdrop').forEach(el => {
+      el.addEventListener('click', function (e) {
+        if (e.target === this) {
+          this.classList.remove('open');
+          document.body.style.overflow = '';
+        }
+      });
+    });
+    // close on Escape key
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape') {
+        document.querySelectorAll('.modal-backdrop.open').forEach(el => {
+          el.classList.remove('open');
+          document.body.style.overflow = '';
+        });
+      }
+    });
+  </script>
+
+</body>
+
+</html>
